@@ -1,0 +1,18 @@
+/* ============
+* page固定ページ
+============== */
+
+.page {
+
+  .l-section {
+    max-width: 1200px;
+    margin-bottom: 0;
+  }
+  .c-section-content {
+    border: 1px solid color-mix(in srgb, var(--main) 80%, var(--sub));
+    border-radius: 30px;
+    padding: clamp(50px, 8.33vw, 100px) clamp(25px, calc(10vw - 30px), 100px);
+    background: var(--main);
+  }
+
+}

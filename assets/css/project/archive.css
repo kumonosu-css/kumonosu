@@ -1,0 +1,56 @@
+/* ============
+* アーカイブ共通
+============== */
+
+.archive {
+  .c-sort-select {
+    /* position: relative; は select の疑似要素には効かないため不要ですが、レイアウト上残しても害はありません */
+    width: 160px;
+    padding: 8px 36px 8px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--sub);
+    background-color: var(--main);
+    border: 1px solid color-mix(in srgb,var(--main) 80%,var(--sub));;
+    border-radius: 6px;
+    cursor: pointer;
+
+    /* デフォルトの矢印を消す */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* --- 疑似要素の代わりに背景で矢印を表示 --- */
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center; /* 右から12px、中央配置 */
+    background-size: 18px; /* 矢印の大きさ */
+
+    outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+    display: block;    /* ブロック要素にする */
+    margin-left: auto; /* 左側を自動（最大）にする */
+    margin-right: 0;   /* 右側は0 */
+  }
+
+  /* hover時 */
+  .c-sort-select:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+
+  /* option */
+  .c-sort-select option {
+    background-color: #1a1a1a;
+    color: #fff;
+  }
+
+  /* モバイル調整 */
+  @media (max-width: 600px) {
+    .c-sort-select {
+      width: 100%; /* 親の .c-sort を触らず、自身を100%に */
+      padding: 8px 36px 8px 14px;
+      background-position: right 14px center; /* モバイル用に位置を微調整 */
+      font-size: 12px;
+    }
+  }
+}

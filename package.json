@@ -1,0 +1,22 @@
+{
+  "name": "masterbase",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "_comment_postcss": "▼ postCSS用ビルドコマンド",
+    "build": "postcss assets/css/common.css -o assets/css/dist/common.css",
+    "watch": "postcss assets/css/common.css -o assets/css/dist/common.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "cssnano": "^7.1.1",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
+    "postcss-import": "^16.1.1"
+  }
+}

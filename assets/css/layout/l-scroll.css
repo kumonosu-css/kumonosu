@@ -1,0 +1,122 @@
+/*===========================================
+pixiv TECH FES風 グリッチ再現
+===========================================*/
+:root {
+    --bg-color: #050505;
+    --text-color: #fff;
+    --accent-cyan: #00F0FF;
+    --accent-pink: #FF0055;
+
+    /*秒数*/
+    --glitch-interval: 4s;
+}
+
+.c-section-title-main {
+    position: relative;
+    display: inline-block;
+    letter-spacing: 0.05em;
+    /* 2秒周期のループ */
+    animation: main-flicker var(--glitch-interval) infinite step-end;
+}
+
+/* グリッチレイヤーの共通設定 */
+.c-section-title-main::before,
+.c-section-title-main::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+/* シアン：左側にズレてスライスされる */
+.c-section-title-main::before {
+    left: -3px;
+    text-shadow: 2px 0 var(--accent-cyan);
+    /* 2秒周期のループ */
+    animation: glitch-slice-cyan var(--glitch-interval) infinite step-end;
+    z-index: -1;
+}
+
+/* ピンク：右側にズレてスライスされる */
+.c-section-title-main::after {
+    left: 3px;
+    text-shadow: -2px 0 var(--accent-pink);
+    /* 2秒周期のループ */
+    animation: glitch-slice-pink var(--glitch-interval) infinite step-end;
+    z-index: -2;
+}
+
+/* =========================================
+    KEYFRAMES
+    ========================================= */
+
+/* メイン文字のチラつき */
+@keyframes main-flicker {
+    0%   { opacity: 0; transform: translateX(4px); }
+    2%   { opacity: 1; transform: translateX(-4px); }
+    4%   { opacity: 0.5; }
+    6%   { opacity: 1; transform: translateX(0); }
+    100% { opacity: 1; }
+}
+
+/* シアンの断片化アニメーション */
+@keyframes glitch-slice-cyan {
+    0%   { opacity: 1; clip-path: inset(80% 0 0 0); transform: translateX(-10px); }
+    2%   { clip-path: inset(10% 0 60% 0); transform: translateX(10px); }
+    4%   { clip-path: inset(40% 0 30% 0); transform: translateX(-5px); }
+    6%   { clip-path: inset(0 0 90% 0); transform: translateX(5px); }
+    8%   { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* ピンクの断片化アニメーション */
+@keyframes glitch-slice-pink {
+    0%   { opacity: 1; clip-path: inset(0 0 70% 0); transform: translateX(10px); }
+    3%   { clip-path: inset(50% 0 10% 0); transform: translateX(-10px); }
+    5%   { clip-path: inset(20% 0 50% 0); transform: translateX(5px); }
+    7%   { clip-path: inset(80% 0 0 0); transform: translateX(-5px); }
+    9%   { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* サブタイトルの出現 */
+.c-section-title-sub {
+    position: relative;
+    display: inline-block;
+    letter-spacing: 0.05em;
+    /* 2秒周期のループ */
+    animation: main-flicker var(--glitch-interval) infinite step-end;
+}
+
+/* グリッチレイヤーの共通設定 */
+.c-section-title-sub::before,
+.c-section-title-sub::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+/* シアン：左側にズレてスライスされる */
+.c-section-title-sub::before {
+    left: -3px;
+    text-shadow: 2px 0 var(--accent-cyan);
+    /* 2秒周期のループ */
+    animation: glitch-slice-cyan var(--glitch-interval) infinite step-end;
+    z-index: -1;
+}
+
+/* ピンク：右側にズレてスライスされる */
+.c-section-title-sub::after {
+    left: 3px;
+    text-shadow: -2px 0 var(--accent-pink);
+    /* 2秒周期のループ */
+    animation: glitch-slice-pink var(--glitch-interval) infinite step-end;
+    z-index: -2;
+}

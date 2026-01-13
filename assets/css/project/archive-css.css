@@ -1,0 +1,76 @@
+/* ============
+* アーカイブCSS
+============== */
+
+.post-type-archive-css {
+  .l-section {
+      .c-section-title {
+          margin-bottom: 0;
+      }
+  }
+  .glow {
+    display: none;
+  }
+  /* フィルター（c-active-filters）が表示されているセクションだけ、タイトルの下マージンを0に */
+  .l-section:has(.c-active-filters__chip:not([hidden])) .c-section-title {
+    margin-bottom: 50px;
+  }
+  .c-active-filters[hidden]{
+    display:none;
+  }
+  .c-section-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 30px;
+  }
+  .c-active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  .c-active-filters__list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    padding:0;
+    list-style:none;
+  }
+  .c-active-filters__chip{
+    align-items: center;
+    background: var(--main);
+    border: 1px solid color-mix(in srgb,var(--main) 80%,var(--sub));
+    border-radius: 5px;
+    color: color-mix(in srgb,var(--main) 15%,var(--sub));
+    cursor: pointer;
+    display: inline-flex;
+    gap: 8px;
+    padding: 3px 6px;
+    font-size: 12px;
+  }
+  .c-active-filters__head {
+    line-height: 1;
+  }
+  .c-active-filters__chip-x{
+    opacity:.7;
+  }
+  .c-active-filters__clear{
+    border-bottom: 1px solid color-mix(in srgb,var(--main) 40%,var(--sub));
+    color: color-mix(in srgb,var(--main) 40%,var(--sub));
+    font-size: 11px;
+    padding-bottom: 5px;
+    line-height: 1;
+  }
+  @media (max-width: 600px) {
+    .l-section {
+      .c-section-title {
+          margin-bottom: 50px;
+      }
+    }
+    .c-section-option {
+      flex-flow: column;
+      gap: 20px;
+    }
+  }
+}

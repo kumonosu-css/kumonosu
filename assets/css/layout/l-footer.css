@@ -1,0 +1,166 @@
+/*===========================================
+footer.css
+フッターのスタイル
+===========================================*/
+
+/* フッター全体 */
+.l-footer {
+  background: color-mix(in srgb, var(--main) 98%,  var(--sub));
+  padding-top: 100px;
+
+  /* パンくずリストのデザイン */
+  .l-navi-breadcrumb {
+    margin: 0 auto;
+    max-width: 1600px;
+    padding: 0 40px 50px;
+    font-size: 12px;
+    color: color-mix(in srgb, var(--sub) 40%, transparent);
+  }
+
+  .l-breadcrumb-list {
+        display: inline;
+        line-height: 2;
+
+    a {
+      color: color-mix(in srgb, var(--sub) 40%, transparent);
+      text-decoration: none;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+    .sep {
+      margin: 0 8px;
+    }
+  }
+
+  /* 内側レイアウト */
+  .l-footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    justify-content: space-between;
+    max-width: 1600px;     /* 必要ならここだけ 1520/1600 に変更OK */
+    margin: 0 auto;
+    padding: 0 40px;
+    gap: 60px;
+  }
+
+  /* --- 左側（プロフィール） --- */
+
+  /* ロゴ */
+  .c-footer-logo {
+    width: 200px;
+    margin-bottom: 50px;
+  }
+
+  /* プロフィール */
+  .c-footer-profile {
+    color: color-mix(in srgb, var(--main) 40%, var(--sub));
+  }
+  .c-footer-profile-name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  .c-footer-profile-job {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+  .c-footer-profile-desc {
+    font-size: 12px;
+    margin-bottom: 30px;
+    line-height: 1.8;
+  }
+
+  /* SNS */
+  .c-footer-social {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .c-footer-social a {
+    display: flex;
+    width: 16px;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  /* --- 右側（ナビ） --- */
+  .l-footer-nav {
+    display: flex;
+    justify-content: end;
+    gap: 80px;
+  }
+
+  /* 下部リンク群 */
+  .c-footer-subnav ul,
+  .c-footer-links ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 12px;
+
+    li {
+      line-height: 1.2;
+    }
+
+    a {
+      color: color-mix(in srgb, var(--main) 40%, var(--sub));
+      font-family: Outfit Local;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  /* コピーライト */
+  .c-footer-copyright {
+    margin-top: 80px;
+    text-align: center;
+    font-size: 10px;
+    color: color-mix(in srgb, var(--main) 60%, var(--sub));
+    padding: 0 20px;
+  }
+
+}
+
+/* スマホ対応 */
+@media (max-width: 600px){
+  .l-footer{
+    padding-top: 50px;
+
+    .l-footer-inner{
+      padding: 0 20px;
+      grid-template-columns: 1fr;
+    }
+
+    .l-footer-nav{
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .c-footer-links ul,
+    .c-footer-subnav ul {
+      gap: 20px;
+    }
+
+    .c-footer-subnav a,
+    .c-footer-links a {
+      display: flex;
+      justify-content: space-between;
+
+      &:after {
+        color: color-mix(in srgb, var(--main) 25%, var(--sub));
+        content: "»";
+        font-size: 1.2em;
+        right: 10px;
+      }
+    }
+    .l-navi-breadcrumb {
+      padding: 0 20px 50px;
+    }
+  }
+}

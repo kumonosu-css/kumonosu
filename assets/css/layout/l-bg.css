@@ -1,0 +1,15 @@
+/*===========================================
+l-loading.css
+ローディング画面のスタイル
+===========================================*/
+/* 背景Canvasを入れるコンテナ（Tailwindの fixed inset-0 z-0 pointer-events-none h-screen w-full に相当） */
+#canvas-container-bg {
+    position: fixed;      /* 画面に固定 */
+    top: 0;
+    left: 0;
+    width: 100%;          /* 幅いっぱい */
+    height: 100vh;        /* 高さいっぱい */
+    z-index: -2;           /* 最背面に配置 */
+    pointer-events: none; /* クリックを透過させる（コンテンツ操作の邪魔をしない） */
+    opacity: 0.6;
+}

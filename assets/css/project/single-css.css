@@ -1,0 +1,156 @@
+/* ============
+* 記事ページ
+============== */
+
+.single-css {
+  .l-section--date {
+    margin-bottom: 10px;
+  }
+  /* 詳しい説明 */
+  h3 {
+    border-bottom: 1px solid transparent;
+    -o-border-image: linear-gradient(to right,var(--accent),var(--accent2)) 1;
+    border-image: linear-gradient(to right, var(--accent), var(--accent2)) 1;
+    font-size: 22px;
+    margin: 70px 0 30px;
+    padding-bottom: 5px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  .wp-block-list {
+    list-style: disc;
+    padding-left: 20px;
+
+    li {
+      margin-bottom: 20px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  /* プレビュー */
+  .c-preview-content {
+    width: 100% !important;
+    max-width: 100% !important; /* 絶対に親を超えない */
+    position: relative;
+    border-radius: 15px;
+    background: var(--main);
+    border: 1px solid color-mix(in srgb, var(--main) 80%, var(--sub));
+  }
+
+  /* プレビュー内の画像や要素がはみ出さないように */
+  .c-preview-content img {
+      max-width: 100%;
+      height: auto;
+  }
+
+  .c-preview-iframe {
+    width: 100%;
+    aspect-ratio: 1920 / 1080;
+    border-radius: 15px;
+  }
+
+  /* フルスクリーン */
+  #js-kumonosu-preview-frame {
+    position: relative;
+  }
+
+  /* 右下アイコンボタン */
+  .c-preview-fs{
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 50;
+
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: rgba(5,5,5,.55);
+    backdrop-filter: blur(6px);
+
+    display: grid;
+    place-items: center;
+
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .c-preview-fs:hover{
+    background: rgba(5,5,5,.75);
+  }
+
+  /* SVG共通 */
+  .c-preview-fs svg{
+    width: 22px;
+    height: 22px;
+    display: block;
+  }
+
+  /* 初期状態：縮小アイコンは非表示 */
+  .c-preview-fs .icon-exit{
+    display: none;
+  }
+
+  /* Fullscreen中はアイコンを切り替える */
+  #js-kumonosu-preview-frame:fullscreen .c-preview-fs .icon-enter{
+    display: none;
+  }
+  #js-kumonosu-preview-frame:fullscreen .c-preview-fs .icon-exit{
+    display: block;
+  }
+
+  /* Fullscreen中：iframeを画面いっぱい */
+  #js-kumonosu-preview-frame:fullscreen .c-preview-iframe{
+    height: 100vh;
+  }
+
+  /* Fullscreen中の背景（任意） */
+  #js-kumonosu-preview-frame:fullscreen{
+    background: #050505;
+  }
+
+}
+@media (max-width: 800px) {
+  .single-css {
+    .l-section--share {
+      .c-share-item a {
+        width: 160px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+@media (max-width: 600px) {
+  .single-css {
+    h3 {
+      font-size: 20px;
+    }
+    .c-preview-tab > label {
+      max-width: calc((100% - 20px) / 3);
+    }
+    .l-section--share {
+      .c-share-item a {
+        width: 50px;
+        border-radius: 50%;
+      }
+      .c-share-text {
+        display: none;
+      }
+    }
+    .c-code-code {
+      padding: 30px;
+    }
+    .c-code-copy {
+      margin-top: 20px;
+      margin-right: 20px;
+    }
+    .c-code-code {
+      margin-top: -60px;
+      font-size: 12px;
+    }
+  }
+}

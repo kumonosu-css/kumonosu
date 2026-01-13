@@ -1,0 +1,92 @@
+/*===========================================
+l-loading.css
+ローディング画面のスタイル
+===========================================*/
+        /* Loader container covers the whole screen and sits on top */
+        #loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #050505;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #loader-container.hidden {
+            opacity: 0;
+            pointer-events: none;
+            background-color: #050505;
+        }
+        #c {
+            display: block;
+            touch-action: none;
+        }
+        /* Main content fade-in is very quick (0.1s) to match the abruptness */
+        #js-loading {
+            opacity: 0;
+            transition: opacity 0.1s ease-in-out;
+        }
+        #js-loading.loaded {
+            opacity: 1;
+            overflow: visible;
+        }
+
+        /* ------------------------------------- */
+        /* GLITCH EFFECT FOR MAIN CONTENT REVEAL */
+        /* Includes Shake, RGB Separation, and Horizontal Noise Lines */
+        /* ------------------------------------- */
+        @keyframes content-glitch {
+            0%, 100% { 
+                filter: none;
+                transform: translate(0, 0); 
+                clip-path: inset(0 0 0 0);
+            }
+            10% { 
+                filter: hue-rotate(-2deg) brightness(1.2) contrast(1.1); 
+                transform: translate(-1.5px, 0.5px); 
+                clip-path: inset(10% 0 85% 0); /* Horizontal noise slice */
+            }
+            20% { 
+                filter: contrast(1.1) brightness(0.9) saturate(1.2); 
+                transform: translate(1px, -0.5px); 
+                clip-path: inset(5% 0 90% 0);
+            }
+            30% {
+                filter: none;
+                transform: translate(0.5px, 0);
+                clip-path: inset(75% 0 10% 0); /* Another slice */
+            }
+            40% {
+                filter: saturate(1.1) hue-rotate(1deg) contrast(1.1);
+                transform: translate(-0.5px, -1px);
+                clip-path: inset(20% 0 70% 0);
+            }
+            50% {
+                filter: none;
+                transform: translate(0.5px, 0.5px);
+                clip-path: inset(80% 0 5% 0);
+            }
+            60% {
+                filter: hue-rotate(-1deg) contrast(1.15);
+                transform: translate(-1.5px, 0);
+                clip-path: inset(5% 0 85% 0);
+            }
+            70% {
+                filter: contrast(1.05) brightness(1.1);
+                transform: translate(1px, 0);
+                clip-path: inset(50% 0 35% 0);
+            }
+            80%, 90% {
+                filter: none;
+                transform: translate(0, 0);
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        .glitch-effect {
+            /* Use steps for a more digital, less smooth glitch look */
+            animation: content-glitch 0.3s steps(10) 1;
+        }

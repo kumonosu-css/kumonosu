@@ -1,0 +1,593 @@
+/*===========================================
+header.css　　
+ヘッダーのスタイルを記載するcssファイルとして使用
+===========================================*/
+/* 両方一旦隠す */
+.l-navi-menu,
+.l-navi-search {
+  display: none;
+}
+
+/* メニュー表示 */
+.l-navi.-mode-menu .l-navi-menu {
+  display: block;
+}
+
+/* 検索表示 */
+.l-navi.-mode-search .l-navi-search {
+  display: block;
+}
+
+/* --- ナビゲーション全体のコンテナ --- */
+.l-navi {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* --- 背景オーバーレイ --- */
+.l-navi-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: color-mix(in srgb, var(--accent2) 3%, transparent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.l-navi.-open {
+  pointer-events: auto;
+
+  .l-navi-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  /* 開いた状態（上詰めのまま展開） */
+  .l-navi-bg {
+    background-color: var(--main);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    max-width: 100vw;
+    max-height: fit-content;
+  }
+  .l-navi-area {
+    height: 50px;
+    padding: 0 40px;
+  }
+  /* ハンバーガー */
+  .c-navi-menubtn .c-icon {
+    gap: 0;
+
+    i:nth-child(1) {
+      transform: translateY(1px) rotate(45deg);
+    }
+    i:nth-child(2) {
+      opacity: 0;
+    }
+    i:nth-child(3) {
+      transform: translateY(-1px) rotate(-45deg);
+    }
+  }
+  /* 開いた状態 */
+  .l-navi-menu {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.2s; /* 箱が開いてから中身が出る */
+    overflow-y: auto;
+  }
+}
+
+/* --- メニュー本体（白い箱） --- */
+.l-navi-bg {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+
+  /* アニメーション設定（シンプルな設定に戻しました） */
+  transition:
+      width 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      border-radius 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.5s ease;
+}
+
+/* 閉じた状態（ピル型） */
+.l-navi.-closed {
+
+  .l-navi-bg {
+    width: 600px!important;
+    height: 50px!important;
+    border-radius: 50px;
+  }
+}
+
+/* ロゴの横幅を固定して、レイアウト崩れを防ぐ */
+.c-logo {
+  width: 130px;
+  display: flex;
+  flex-shrink: 0; /* 縮まないようにする */
+}
+
+/*メニュー*/
+.l-navi nav ul {
+  display: flex;
+  gap: 20px;
+  font-size: 16px;
+  font-family: 'Poiret One Local';
+  letter-spacing: 1px;
+}
+.l-navi .c-nav.c-pc-w600 ul a {
+  position: relative;
+}
+.l-navi .c-nav.c-pc-w600 ul a::after {
+  background-color: color-mix(in srgb,var(--main) 15%,var(--sub)); /* 下線の色 */
+  bottom: -4px; /* 要素の下端からの距離 */
+  content: ""; /* 要素に内容を追加 */
+  height: 1px; /* 下線の高さ */
+  left: 0; /* 要素の左端からの距離 */
+  position: absolute; /* 絶対位置指定 */
+  transform: scale(0, 1); /* 下線を横方向に0倍、縦方向に1倍に変形（非表示） */
+  transform-origin: center top; /* 変形の原点を中央上に指定 */
+  transition: transform .3s; /* 変形をアニメーション化 */
+  width: 100%; /* 要素の幅 */
+}
+/* リンクにホバーした際の下線の表示 */
+.l-navi .c-nav.c-pc-w600 ul a:hover::after {
+  transform: scale(1, 1); /* 下線を横方向に1倍、縦方向に1倍に変形（表示） */
+}
+
+/* SVGの基本設定 */
+.search-svg {
+    width: 26px;
+    height: 26px;
+}
+
+/* 共通の線のスタイル */
+.base-line path,
+.base-line line,
+.trace-line path,
+.trace-line line {
+    fill: none;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* 1. 最初に見えているグレーの線 */
+.base-line {
+    stroke: #d9d9d9;
+}
+
+/* 2. ホバーで伸びてくる明るいグレーの線 */
+.trace-line {
+    stroke: #4a4a4a; /* 指定の色 */
+}
+
+.trace-line path,
+.trace-line line {
+    /* パスの長さを設定（このアイコンなら100でカバー可能） */
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100; /* 最初は消しておく */
+    transition: stroke-dashoffset 0.6s ease-in-out;
+}
+
+/* ホバー時の挙動 */
+.c-navi-searchbtn:hover .trace-line path,
+.c-navi-searchbtn:hover .trace-line line {
+    stroke-dashoffset: 0; /* 線をなぞるように表示 */
+}
+
+/* (オプション) 持ち手部分を少し遅らせてなぞる場合 */
+.c-navi-searchbtn:hover .trace-line line {
+    transition-delay: 0.15s;
+}
+
+
+
+/* --- ヘッダーバー --- */
+.l-navi-area {
+  position: relative;
+  z-index: 1010;
+  min-width: 200px;
+  height: 50px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+  box-sizing: border-box;
+  transition: padding 0.5s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: color-mix(in srgb, var(--main) 40%, transparent);
+  border-radius: 50px;
+}
+
+
+/* 右側（メニュー＋ハンバーガー） */
+.l-navi-right {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 20px;
+}
+
+/* ハンバーガー */
+.c-navi-menubtn {
+  width: 20px;
+  height: 20px;
+  position: relative;
+
+  .c-icon {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+
+     i {
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: var(--sub);
+      transition: all 0.3s;
+      transform-origin: center;
+    }
+  }
+}
+
+
+/* --- コンテンツ部分（ハンバーガーメニュー） --- */
+.l-navi-menu {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  box-sizing: border-box;
+  width: fit-content;
+  min-width: 100%;
+  padding: 20px 40px 60px;
+  overflow: hidden;
+}
+
+/* 計測用 */
+.l-navi.-measuring .l-navi-menu {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* キーワード検索 */
+.c-filter-input {
+  background: color-mix(in srgb, var(--main) 95%, var(--sub));
+  border: 1px solid color-mix(in srgb, var(--main) 85%, var(--sub));
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: var(--sub);
+  outline: none;
+  width: 300px;
+}
+
+.c-filter-input::placeholder {
+  color: color-mix(in srgb, var(--main) 60%, var(--sub))!important;
+}
+
+/* リストのレイアウト */
+.l-footer-block-wrap {
+  overflow: scroll;
+  max-height: 45vh;
+}
+.c-search-item {
+  margin-bottom: 50px;
+}
+.l-footer-main {
+  padding: 50px 50px 0 50px;
+  position: relative;
+}
+.c-search-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 1;
+  font-family: 'Outfit Local';
+}
+
+.c-filter-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.c-filter-check {
+  margin-bottom: 0;
+}
+
+.c-filter-check input {
+  display: none;
+}
+
+.c-filter-check span {
+  padding: 5px 20px;
+  border-radius: 5px;
+  display: block;
+  cursor: pointer;
+  background: color-mix(in srgb,var(--main) 95%,var(--sub));
+  color: color-mix(in srgb,var(--main) 60%,var(--sub));
+  position: relative;
+}
+
+.c-filter-check input:checked + span {
+  color: var(--sub);
+  background: linear-gradient(90deg, var(--accent2) 0, color-mix(in srgb, var(--accent) 50%, var(--accent2)) 50%, var(--accent) 100%);
+  position: relative;
+}
+.c-filter-check input:checked + span:after {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid var(--sub);
+  border-bottom: 2px solid var(--sub);
+  transform: rotate(-45deg);
+  position: absolute;
+  right: 10px;
+  top: 17px;
+}
+
+.c-parts-content {
+  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.c-parts-content span {
+  border-radius: 30px;
+  width: fit-content;
+  padding: 5px 20px;
+  font-size: 14px;
+}
+
+.c-parts-content .c-filter-check input:checked+span {
+  padding: 5px 20px;
+}
+
+.c-parts-content .c-filter-check input:checked + span:after {
+  content: none;
+}
+
+.c-filter-check span:hover {
+  color: var(--sub);
+  background: linear-gradient(90deg, var(--accent2) 0, color-mix(in srgb, var(--accent) 50%, var(--accent2)) 50%, var(--accent) 100%);
+}
+
+/* 計測時：サイズを中身に合わせて測る */
+.js-navi.-measuring .l-navi-bg {
+    width: auto !important;
+    height: auto !important;
+    transition: none !important;
+    visibility: hidden !important;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+/* 計測中は中身を表示させる */
+.js-navi.-measuring .l-navi-menu,
+.js-navi.-measuring .l-navi-con {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: static !important;
+}
+
+/* 検索ボタン */
+.c-navi-searchbtn {
+  width: 26px;
+  height: 26px;
+}
+
+.c-search-link.is-disabled{
+  opacity: .35;
+  pointer-events: none;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+.c-search-count{
+  margin-left: .35em;
+  font-size: .9em;
+  opacity: .85;
+}
+.c-filter-actions{
+  display:flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items:center;
+  gap:24px;
+  position: sticky;
+  bottom: 0;
+  background: var(--main);
+  padding: 15px 0 30px;
+}
+.c-filter-count{
+  display:flex;
+  align-items:baseline;
+  gap:4px;
+}
+.c-filter-count-num{
+  font-size:30px;
+  font-weight:700;
+  font-family: 'Outfit Local';
+  line-height: 1;
+}
+.c-filter-submit {
+  margin: 0;
+  border-radius: 30px;
+}
+.c-filter-submit[disabled]{
+  opacity:.4;
+  cursor:not-allowed;
+}
+.gradient-btn.c-filter-submit {
+  .gradient-btn__text {
+    padding: 4px 40px;
+    font-size: 16px;
+  }
+}
+.c-filter-clear {
+  color: color-mix(in srgb,var(--main) 40%,var(--sub));
+  font-size: 11px;
+  border-bottom: 1px solid color-mix(in srgb,var(--main) 40%,var(--sub));
+  flex: 0 0 111px;
+}
+.c-filter-clear:hover {
+  opacity: 0.7;
+}
+.-open-search {
+  i {
+    background-color: color-mix(in srgb,var(--main) 15%,var(--sub));
+    display: block;
+    height: 1px;
+    transform-origin: center;
+    transition: all .3s;
+    width: 100%;
+  }
+  i:first-child {
+    transform: translateY(1px) rotate(45deg);
+  }
+  i:nth-child(2) {
+    opacity: 0;
+  }
+  i:nth-child(3) {
+    transform: translateY(-1px) rotate(-45deg);
+  }
+  .c-navi-searchbtn .c-icon {
+    display: none;
+  }
+}
+.c-icon-close:hover {
+  i {
+    opacity: 0.7;
+  }
+  i:nth-child(2) {
+    opacity: 0;
+  }
+}
+
+
+/* スマホ対応 */
+@media (max-width: 600px) {
+  .c-filter-input {
+    width: 100%;
+  }
+  .l-navi-menu {
+    padding: 40px;
+  }
+  .l-navi.-closed .l-navi-bg {
+    width: 100% !important;
+    padding: 0 20px;
+  }
+  .l-navi.-open .l-navi-bg {
+    width: 100vw !important;
+    height: 100vh!important;
+    max-height: 100vh!important;
+    top: 0;
+    padding-top: 30px;
+    border-radius: 0;
+  }
+  .l-footer-block-wrap {
+    max-height: 76vh;
+  }
+  .c-navi-menubtn .c-icon {
+    display: flex;
+  }
+  .l-navi-breadcrumb {
+    margin-top: 5px;
+    font-size: 10px;
+    line-height: 1;
+  }
+  .l-navi nav ul {
+    display: block;
+    font-family: 'Outfit Local';
+  }
+  .c-filter-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .l-footer-main {
+    padding: 30px 30px 0 30px;
+    height: 100vh;
+  }
+  .c-filter-actions {
+    gap: 10px 24px;
+    position: sticky;
+  }
+  .c-filter-check span {
+    font-size: 12px;
+  }
+  .gradient-btn.c-filter-submit {
+    .gradient-btn__text {
+      padding: 4px 20px;
+      font-size: 12px;
+    }
+  }
+  .gradient-btn .gradient-btn__icon {
+    font-size: 16px;
+  }
+  .c-filter-count {
+    font-size: 13px;
+  }
+  .c-filter-count-num {
+    font-size: 25px;
+  }
+  .c-nav.c-sp-w600 {
+    display: block;
+  }
+  .c-nav ul li {
+    margin-bottom: 20px;
+  }
+  .c-nav a {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    align-items: center;
+
+    &:after {
+      color: color-mix(in srgb, var(--main) 25%, var(--sub));
+      content: "»";
+      font-size: 1.2em;
+      right: 10px;
+    }
+  }
+  .-open-search {
+    .c-icon {
+      display: none;
+    }
+    .c-icon-close {
+      display: flex;
+      position: relative;
+      gap: 0;
+      height: 20px;
+      position: relative;
+      width: 20px;
+      flex-direction: column;
+    }
+    .c-navi-menubtn {
+      display: none;
+    }
+  }
+  .-open-menu .c-navi-searchbtn {
+    display: none;
+  }
+}

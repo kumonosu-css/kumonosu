@@ -1,0 +1,101 @@
+/* ========================================================== */
+/* 1. Noto Sans JP (Medium)                                   */
+/* ========================================================== */
+/* 基本テキスト日本語 */
+@font-face {
+    font-family: 'Noto Sans JP Local';
+    src: url('../../../assets/fonts/NotoSansJP-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans JP Local';
+    src: url('../../../assets/fonts/NotoSansJP-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ========================================================== */
+/* 2. Poiret One (Regular)                                    */
+/* ========================================================== */
+/* 英語タイトル */
+@font-face {
+    font-family: 'Poiret One Local';
+    src: url('../../../assets/fonts/PoiretOne-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ========================================================== */
+/* 3. Outfit (Regular & Bold)                       */
+/* ========================================================== */
+/* 基本テキスト英語 */
+/* Outfit Regular 400 */
+@font-face {
+    font-family: 'Outfit Local';
+    src: url('../../../assets/fonts/Outfit-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Outfit Bold 700 */
+@font-face {
+    font-family: 'Outfit Local';
+    src: url('../../../assets/fonts/Outfit-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ========================================================== */
+/* 4. Digital Numbers (Regular)                               */
+/* ========================================================== */
+/* 特殊な数字表示（カウントダウン、タイマーなど）に使用されることを想定 */
+@font-face {
+    font-family: 'Digital Numbers Local';
+    src: url('../../../assets/fonts/DigitalNumbers-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ========================================================== */
+/* 5. Megrim (Regular)                               */
+/* ========================================================== */
+/* ロゴ */
+@font-face {
+    font-family: 'Megrim Local';
+    src: url('../../../assets/fonts/Megrim.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ========================================================== */
+/* 6. Homoarakhn                              */
+/* ========================================================== */
+/* 流れる文字 */
+@font-face {
+    font-family: 'Homoarakhn Local';
+    src: url('../../../assets/fonts/Homoarakhn.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ========================================================== */
+/* 7. AmazingSpiderManslant                             */
+/* ========================================================== */
+/* 流れる文字 */
+@font-face {
+    font-family: 'AmazingSpiderManslant Local';
+    src: url('../../../assets/fonts/AmazingSpiderManslant.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}

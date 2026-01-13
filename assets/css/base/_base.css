@@ -1,0 +1,151 @@
+/*===========================================
+base.css　　
+基本的なスタイルを記載するcssファイルとして使用
+===========================================*/
+html,
+body {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+html.is-noScroll,
+body.is-noScroll {
+  overflow-y: hidden;
+}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  background: var(--main);
+  color: color-mix(in srgb, var(--main) 15%, var(--sub));
+  font-family: 'Noto Sans JP Local', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+  font-size: 15px;
+  line-height: 2;
+  -webkit-font-feature-settings: "palt" 1;
+  font-feature-settings: "palt" 1;
+  letter-spacing: 1.7px;
+}
+body.is-noScroll {
+  overflow-y: hidden;
+}
+
+html {
+  margin-top: 0 !important;
+}
+
+p {
+  margin-bottom: 30px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: color-mix(in srgb, var(--main) 15%, var(--sub));
+}
+
+img {
+  max-width: 100%;
+  margin: auto;
+  vertical-align: top;
+  height: auto;
+}
+
+h1, h2, h3, h4, h5 {
+  color: color-mix(in srgb, var(--main) 15%, var(--sub));
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+span {
+  word-break: break-word;
+}
+
+th, td {
+  word-break: break-all;
+}
+
+input,
+textarea {
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+input:-moz-placeholder-shown, textarea:-moz-placeholder-shown {
+  color: #BABABA !important;
+}
+input:placeholder-shown,
+textarea:placeholder-shown {
+  color: #BABABA !important;
+}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #BABABA !important;
+}
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: #BABABA !important;
+  opacity: 1;
+}
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: #BABABA !important;
+  opacity: 1;
+}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #BABABA !important;
+}
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+  color: #BABABA !important;
+}
+
+#wpadminbar {
+  display: none;
+}
+
+/* PCSP切替 */
+.c-pc-w480,
+.c-pc-w600,
+.c-pc-w1000 {
+  display: inline-block;
+}
+.c-sp-w480,
+.c-sp-w600,
+.c-sp-w1000 {
+  display: none;
+}
+@media (max-width: 1000px) {
+  .c-pc-w61000 {
+    display: none;
+  }
+  .c-sp-w1000 {
+    display: inline-block;
+  }
+}
+@media (max-width: 600px) {
+  .c-pc-w600 {
+    display: none;
+  }
+  .c-sp-w600 {
+    display: inline-block;
+  }
+}
+@media (max-width: 480px) {
+  .c-pc-w480 {
+    display: none;
+  }
+  .c-sp-w480 {
+    display: inline-block;
+  }
+}

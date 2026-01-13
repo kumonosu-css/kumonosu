@@ -1,0 +1,148 @@
+/*===========================================
+l-main.css
+基本的なスタイルを記載するcssファイルとして使用
+※共通部分が出た場合のみ使用。基本はpage.cssに記載で問題なし
+===========================================*/
+
+/* 共通セクション */
+h1 {
+  font-size: 30px;
+  font-weight: bold;
+}
+h2 {
+  font-size: 22px;
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(to right, var(--accent), var(--accent2)) 1;
+  margin: 70px 0 30px;
+  padding-bottom: 5px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.l-main {
+  padding-bottom: 150px;
+  overflow: hidden;
+}
+
+/* 背景 */
+#canvas-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(80px) saturate(1.5) contrast(1.2) brightness(0.8);
+    transform: scale(1.1);
+    z-index: -1; /* 背面 */
+}
+
+#liquidCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.l-section {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto 150px;
+  padding: 0 40px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .c-section-title {
+    margin-bottom: 50px;
+    border: none;
+  }
+  .c-section-title-main {
+    display: inline-block;
+    font-family: 'Poiret One Local';
+    font-size: clamp(40px, calc(8vw + 0px), 80px);
+    background: linear-gradient(100deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+    font-weight: normal;
+  }
+  .c-section-title-sub {
+    display: block;
+    font-family: 'Outfit Local';
+    font-size: clamp(12px, calc(2.4vw + 0px), 18px);
+    color: color-mix(in srgb, var(--accent) 80%, var(--sub));
+    font-weight: normal;
+  }
+}
+@media screen and (max-width: 600px) {
+  .common-bg-inner {
+
+    &::before {
+      height: 400px;
+      left: -200px;
+      top: -40px;
+      width: 400px;
+    }
+
+    &::after {
+      height: 400px;
+      bottom: -100px;
+      width: 400px;
+    }
+  }
+  .l-section {
+    margin: 0 auto 80px;
+    padding: 0 20px;
+
+    .c-section-title {
+      margin-bottom: 20px;
+    }
+  }
+}
+@media screen and (max-width: 500px) {
+  .l-section {
+    .c-section-title-main {
+      margin-bottom: 0;
+      letter-spacing: 2px;
+    }
+  }
+}
+
+/* アーカイブ・記事・固定ページ共通 */
+.archive,
+.single,
+.page {
+  .l-main {
+    padding-top: 130px;
+  }
+}
+
+/* 404 */
+.error404 {
+  .l-main {
+    padding-bottom: 0;
+  }
+  .l-section {
+    padding: 0;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    justify-content: center;
+  }
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        transparent 50%,
+        rgba(0, 0, 0, 0.5) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.2;
+  }
+}

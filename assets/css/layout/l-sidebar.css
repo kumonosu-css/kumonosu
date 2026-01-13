@@ -1,0 +1,59 @@
+/*===========================================
+l-sidebar.css　　
+サイドバーのスタイルを記載するcssファイルとして使用
+===========================================*/
+.l-main-aside {
+    .l-aside-sticky {
+        position: sticky;
+        top: 0;
+    }
+    .c-aside-block {
+        margin-bottom: 50px;
+    }
+    .c-aside-category,
+    .c-aside-tag {
+        font-size: 14px;
+    }
+    .c-aside-tag ul {
+        display:flex;
+        flex-flow: wrap;
+        padding: 0;
+        gap: 20px;
+    }
+    .c-aside-title {
+        font-family: Poiret One Local;
+        font-size: 40px;
+        border: none;
+        padding-bottom: 0;
+        margin: 0 0 20px 0;
+    }
+    .c-aside-list {
+        display:flex;
+        flex-flow: column;
+        gap: 20px;
+        padding-left: 20px;
+    }
+    /* --- リスト項目（li）全体の設定 --- */
+    .c-aside-list li {
+        color: color-mix(in srgb,var(--main) 55%,var(--sub)); /* マーカーと文字の基本色（グレー） */
+        transition: color 0.3s ease; /* 色変化のアニメーション */
+    }
+
+    /* --- リンクの設定 --- */
+    .c-aside-list li a {
+        color: inherit; /* 親(li)の色を引き継ぐ */
+    }
+
+    /* --- アクティブ時の設定（liにクラスがついた時） --- */
+    .c-aside-list li.is-active {
+        color: var(--sub) !important; /* 文字もマーカーも白になる */
+    }
+    .share-block .c-aside-list {
+        display:flex;
+        flex-flow: wrap;
+        padding: 0;
+    }
+    .share-block .c-aside-list img {
+        width: 30px;
+    }
+}

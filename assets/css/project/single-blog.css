@@ -1,0 +1,65 @@
+/* ============
+* 記事ページ
+============== */
+
+.single-blog {
+  h2{
+    font-size: 25px;
+    margin-top: 100px;
+    padding-bottom: 0;
+  }
+  h3{
+    font-size: 20px;
+    margin: 70px 0 30px;
+    padding-left: 10px;
+    border-left: 1px solid transparent;
+    -o-border-image: linear-gradient(to bottom,var(--accent),var(--accent2)) 1;
+    border-image: linear-gradient(to bottom, var(--accent), var(--accent2)) 1;
+    line-height: 1.2;
+  }
+  .c-preview-iframe {
+    width: 100%;
+    aspect-ratio: 1920 / 1080;
+    margin-bottom: 30px;
+    border-radius: 15px;
+  }
+  .c-code {
+    margin-bottom: 30px;
+  }
+  .c-blog-pick {
+    margin-bottom: 150px;
+  }
+  .c-blog-summary {
+    margin-bottom: 40px;
+  }
+  .wp-block-list {
+    list-style: disc;
+    padding-left: 20px;
+
+    li {
+      margin-bottom: 20px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  pre{
+    width: 100%;
+    min-width: 0;
+    max-height: 500px;
+    padding: 50px;
+    background: color-mix(in srgb, var(--main) 90%, var(--sub));
+    border: 1px solid color-mix(in srgb, var(--main) 80%, var(--sub));
+    border-radius: 15px;
+    overflow: auto;
+    box-sizing: border-box;
+    margin-top: 30px;
+  }
+}
+@media (max-width: 800px) {
+
+}
+@media (max-width: 600px) {
+
+}

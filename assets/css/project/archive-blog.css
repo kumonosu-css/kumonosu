@@ -1,0 +1,110 @@
+/* ============
+* アーカイブBLOG
+============== */
+
+.post-type-archive-blog {
+  .l-section--featured {
+    overflow: hidden;
+
+    .l-card-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      will-change: transform;
+      transition: transform .5s ease;
+    }
+
+    /* ★ ここが核心：常に4つ表示に固定 */
+    .c-blog-card {
+      flex: 0 0 calc((100% - 120px) / 4);
+      max-width: calc((100% - 120px) / 4);
+      box-sizing:border-box;
+      flex-shrink:0;
+    }
+
+    @media (min-width: 1000px) and (max-width: 1299px) {
+      .c-blog-card {
+        flex: 0 0 calc((100% - 80px) / 3);
+        max-width: calc((100% - 80px) / 3);
+      }
+    }
+    @media (min-width: 600px) and (max-width: 999px) {
+      .c-blog-card {
+        flex: 0 0 calc((100% - 40px) / 2);
+        max-width: calc((100% - 40px) / 2);
+      }
+    }
+
+    /* 599以下：1個中央＋左右見切れ */
+    @media (max-width: 599px){
+      .l-card-grid {
+        padding-inline: 4%;
+        justify-content: center
+      }
+      .c-blog-card {
+        flex: 0 0 84%;
+        max-width: 84%;
+      }
+    }
+
+    .l-section--featured img{
+      -webkit-user-drag:none;
+      user-drag:none;
+    }
+
+    /* カードは縮まない */
+    .c-blogcard {
+      flex-shrink: 0;
+    }
+
+    /* =====================
+      nav
+    ===================== */
+    .c-blog-slider-nav{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:60px;
+      margin-top:40px;
+    }
+
+    .c-blog-slider-prev,
+    .c-blog-slider-next{
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      border:1px solid #333;
+      background:#000;
+      color:#fff;
+      cursor:pointer;
+    }
+
+    .c-blog-slider-dots{
+      display:flex;
+      gap:8px;
+    }
+
+    .c-blog-slider-dots button{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      border:none;
+      background:#555;
+      cursor:pointer;
+    }
+
+    .c-blog-slider-dots button.is-active{
+      background:#fff;
+    }
+    /* ドラッグ操作をブラウザに奪われないようにする（必須） */
+    .l-section--featured .l-card-grid{
+      touch-action: pan-y; /* 縦スクロールはOK、横ドラッグはJSが取れる */
+      cursor: grab;
+    }
+
+    /* 画像のネイティブドラッグ抑止 */
+    .l-section--featured img{
+      -webkit-user-drag: none;
+      user-drag: none;
+    }
+  }
+}

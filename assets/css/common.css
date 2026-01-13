@@ -1,0 +1,30 @@
+@charset "UTF-8";
+/* ===========================================
+PostCSSでビルド
+=========================================== */
+
+/*base*/
+@import "base/_ress.css";
+@import "base/_variable.css";
+@import "base/_base.css";
+@import "base/_typography.css";
+
+/*component 特定のデザインを持った部品*/
+@import "component/c-breadcrumb.css";
+@import "component/c-button.css";
+@import "component/c-modal.css";
+@import "component/c-csscard.css";
+@import "component/c-blogcard.css";
+@import "component/c-searchform.css";
+
+/*layout*/
+@import "layout/l-header.css";
+@import "layout/l-footer.css";
+@import "layout/l-main.css";
+@import "layout/l-sidebar.css";
+@import "layout/l-loading.css";
+@import "layout/l-scroll.css";
+@import "layout/l-bg.css";
+
+/*object 構造の骨格(「汎用的な部品」の集合)*/
+@import "object/o-button.css";

@@ -1,0 +1,15 @@
+/* ============
+* searchform
+============== */
+.c-searchform {
+    background: color-mix(in srgb, var(--main) 95%, var(--sub));
+    border: 1px solid color-mix(in srgb, var(--main) 80%, var(--sub));
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-bottom: 50px;
+
+    input {
+        width: 98%;
+        color: var(--sub);
+    }
+}

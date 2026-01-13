@@ -1,0 +1,76 @@
+/* ============
+* page固定ページ
+============== */
+
+.page-contact {
+  p {
+    margin-bottom: 40px;
+  }
+  .red {
+    color: var(--accent2);
+  }
+  .l-section--about label {
+    margin-bottom: 10px;
+    display: block;
+  }
+  input,
+  textarea {
+    background: color-mix(in srgb, var(--main) 95%, var(--sub));
+    border: 1px solid color-mix(in srgb, var(--main) 85%, var(--sub));
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: var(--sub);
+    outline: none;
+  }
+  input {
+    max-width: 350px;
+    width: 100%;
+
+    &:-internal-autofill-selected {
+      background: color-mix(in srgb, var(--main) 95%, var(--sub));
+      color: var(--sub);
+    }
+    &::placeholder {
+      color: color-mix(in srgb, var(--main) 75%, var(--sub))!important;
+    }
+  }
+  textarea {
+    width: 100%;
+
+    &::placeholder {
+      color: color-mix(in srgb, var(--main) 75%, var(--sub))!important;
+    }
+  }
+  /* 通常 */
+  input[type="email"] {
+    background: color-mix(in srgb, var(--main) 95%, var(--sub));
+    border: 1px solid color-mix(in srgb, var(--main) 80%, var(--sub));
+    color: var(--sub);
+  }
+
+  /* フォーカス時（入力中） */
+  input[type="email"]:focus {
+    background: color-mix(in srgb, var(--main) 90%, var(--sub));
+    border-color: color-mix(in srgb, var(--main) 70%, var(--sub));
+    outline: none;
+  }
+
+  /* valid / invalid でも背景を変えさせない */
+  input[type="email"]:valid,
+  input[type="email"]:invalid {
+    background: color-mix(in srgb, var(--main) 95%, var(--sub));
+    color: var(--sub);
+  }
+
+  /* Chrome / Safari autofill 対策（最重要） */
+  input[type="email"]:-webkit-autofill,
+  input[type="email"]:-webkit-autofill:hover,
+  input[type="email"]:-webkit-autofill:focus,
+  input[type="email"]:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px
+      color-mix(in srgb, var(--main) 95%, var(--sub)) inset;
+    -webkit-text-fill-color: var(--sub);
+    caret-color: var(--sub);
+    transition: background-color 9999s ease-in-out 0s;
+  }
+}

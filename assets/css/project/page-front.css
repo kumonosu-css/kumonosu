@@ -1,0 +1,947 @@
+/* ============
+* o-state
+============== */
+
+.is-show {
+    display: block !important;
+}
+
+.is-hide {
+    display: none !important;
+}
+
+.is-block {
+    display: block;
+}
+
+/* ============
+* HERO CONTENT
+============== */
+/* 背景モチーフ */
+.l-hero-canvas {
+    pointer-events: none;
+    position: fixed;
+    height: 100vh;
+    inset: 0px;
+    z-index: -1;
+    background-color: #000; /* 全体の底の色 */
+}
+
+/* Three.jsのCanvasに対する設定 */
+#canvas-container canvas:not(#liquidCanvas) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* 前面 */
+    /* 黒い背景を透過させ、光っているパーティクルだけを表示する魔法の1行 */
+    mix-blend-mode: screen;
+}
+
+
+
+/* テキスト */
+.l-hero {
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .c-hero-title {
+        margin-bottom: 70px;
+        font-weight: normal;
+        font-size: clamp(10px, calc(1.8vw + 2px), 20px);
+        margin-bottom: 10px;
+        text-shadow: 0 0 3px var(--accent2), 0 0 12px color-mix(in srgb, var(--accent2) 60%, transparent), 0 0 24px color-mix(in srgb, var(--accent2) 30%, transparent);
+    }
+
+    .c-hero-copy {
+        margin-bottom: clamp(30px, calc(4.6vw + 2px), 60px);
+    }
+
+    .c-hero-copy-main{
+        font-family: 'Poiret One Local';
+        font-size: clamp(40px, calc(10vw - 20px), 110px);
+        line-height: 1;
+        margin-bottom: clamp(20px, calc(3.33vw - 3.3px), 40px);
+        text-shadow: 0 0 3px var(--accent2), 0 0 12px color-mix(in srgb, var(--accent2) 60%, transparent), 0 0 24px color-mix(in srgb, var(--accent2) 30%, transparent);
+    }
+    .c-hero-copy-sub {
+        font-family: 'Poiret One Local';
+        font-size: clamp(15px, calc(4vw - 2px), 55px);
+        line-height: 1;
+        text-shadow: 0 0 3px var(--accent2), 0 0 12px color-mix(in srgb, var(--accent2) 60%, transparent), 0 0 24px color-mix(in srgb, var(--accent2) 30%, transparent);
+    }
+
+    .c-hero-lead {
+        font-size: clamp( 12px, calc(0.57vw + 8px), 14px);
+        text-shadow: 0 0 3px var(--accent2), 0 0 6px color-mix(in srgb, var(--accent2) 60%, transparent), 0 0 12px color-mix(in srgb, var(--accent2) 30%, transparent);
+        line-height: 2;
+    }
+}
+@media (max-width: 480px) {
+    .l-hero {
+        .c-hero-copy-main {
+            font-size: clamp(47px, calc(4.5vw + 30px), 58px);
+        }
+    }
+}
+@media (max-width: 600px) {
+    .l-hero {
+        padding: 0 20px;
+    }
+}
+
+/* ============
+* POPULAR CONTENT
+============== */
+/* 境界線の光(赤) */
+@property --mask-angle-red { syntax: "<angle>"; inherits: false; initial-value: 151deg;}
+/* 境界線の光(青) */
+@property --mask-angle-blue { syntax: "<angle>"; inherits: false; initial-value: 335deg;}
+/* 背景の光（赤） */
+@property --tx { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --ty { syntax: "<length>"; inherits: false; initial-value: 0px; }
+/* 背景の光（青） */
+@property --tx2 { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --ty2 { syntax: "<length>"; inherits: false; initial-value: 0px; }
+.l-section--popular {
+    overflow-x: visible;
+    padding-bottom: 50px;
+    margin-bottom: 100px;
+    position: relative;
+
+    .l-card-grid {
+        /* セクション内のカードグリッド */
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .c-card {
+        overflow: initial;
+        box-shadow: 0 0 40px color-mix(in srgb, var(--accent2) 15%, transparent);
+        border: 1px solid transparent;
+        --angle: 315deg;
+        background:
+        linear-gradient(var(--main), var(--main)) padding-box,
+        linear-gradient(
+            var(--angle),
+            color-mix(in srgb, var(--main) 66%, var(--sub)) 0%,
+            var(--main) 18%,
+            var(--main) 50%,
+            color-mix(in srgb, var(--main) 92.5%, var(--sub)) 85%,
+            var(--sub) 100%
+        ) border-box;
+        transition: --angle 0.5s linear;
+
+        &:hover {
+            --angle: 495deg;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -50px;
+            z-index: -1;
+            pointer-events: none;
+            padding: 50px;
+            background-color: var(--sub);
+            background-clip: content-box;
+            border-radius: 63px;
+            --mask-angle-red: 151deg;
+            filter: drop-shadow(0 0 6px var(--sub)) drop-shadow(0 0 17px var(--accent2));
+            -webkit-mask-image: linear-gradient(var(--mask-angle-red), var(--main) 40%, transparent 100%);
+            mask-image: linear-gradient(var(--mask-angle-red), var(--main) 16% 15%, transparent 26%);
+            transition: --mask-angle-red 0.5s linear;
+        }
+
+        .c-card-link {
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            position: relative;
+            border-radius: 16px;
+
+            &::before {
+                content: "";
+                position: absolute;
+                width: 200px;
+                height: 200px;
+                top: -100px;
+                left: -100px;
+                bottom: auto;
+                right: auto;
+                filter: blur(20px);
+                background: radial-gradient(circle, color-mix(in srgb, var(--accent2) 60%, var(--sub)) 10%, color-mix(in srgb, var(--main) 57%, var(--accent2)) 30%, color-mix(in srgb,var(--main) 97%,var(--accent2)) 100%);
+                z-index: -1;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                width: 100px;
+                height: 130px;
+                right: -80px;
+                top: 50%;
+                transform: translateY(-50%);
+                filter: blur(50px);
+                z-index: -1;
+                background: radial-gradient(circle, color-mix(in srgb, var(--accent2) 60%, var(--sub)) 10%, color-mix(in srgb, var(--main) 57%, var(--accent2)) 30%, color-mix(in srgb,var(--main) 97%,var(--accent2)) 100%);
+            }
+
+            .glow {
+                position: absolute;
+                background: radial-gradient(circle, var(--sub) 0%, color-mix(in srgb, var(--main) 20%, var(--accent2)) 60%);
+                width: 100%;
+                height: 300px;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -300px;
+                filter: blur(30px);
+                border-radius: 50%;
+                z-index: -1;
+            }
+        }
+
+        /* 2つ目ブルー */
+        &:nth-of-type(2) {
+            --angle: 495deg;
+            box-shadow: 0 0 40px rgba(50, 38, 220, 0.15);
+
+            &:hover {
+                --angle: 675deg;
+            }
+
+            &::before {
+                --mask-angle-red: 335deg;
+                filter: drop-shadow(0 0 6px var(--sub)) drop-shadow(0 0 17px var(--accent));
+                -webkit-mask-image: linear-gradient(var(--mask-angle-blue), var(--main) 40%, transparent 100%);
+                mask-image: linear-gradient(var(--mask-angle-blue), var(--main) 16% 15%, transparent 26%);
+                transition: --mask-angle-blue 0.5s linear;
+            }
+
+            .c-card-link {
+                &::before {
+                    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 55%, var(--sub)) 20%, color-mix(in srgb, var(--main) 70%, var(--accent)) 30%, color-mix(in srgb, var(--main) 97%, var(--accent)) 100%);
+                    top: auto;
+                    left: auto;
+                    bottom: -100px;
+                    right: -100px;
+                }
+
+                &::after {
+                    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 55%, var(--sub)) 20%, color-mix(in srgb, var(--main) 70%, var(--accent)) 30%, color-mix(in srgb, var(--main) 97%, var(--accent)) 100%);
+                    right: auto;
+                    left: -70px;
+                }
+
+                .glow {
+                    background: radial-gradient(circle, var(--sub) 0%, color-mix(in srgb, var(--main) 60%, var(--accent)) 60%);
+                    bottom: auto;
+                    top: -280px;
+                }
+            }
+        }
+    }
+
+    /* 背景の光(赤) */
+    .c-card {
+        .c-card-link::before{
+        --tx: 0px;
+        --ty: 0px;
+        transform: translate(var(--tx), var(--ty));
+
+        transition:
+            --ty 0.20s linear,
+            --tx 0.20s linear 0.2s;
+        }
+    }
+
+    /* 背景の光(青) */
+    .c-card:nth-of-type(2) {
+        .c-card-link::before{
+            --tx2: 0px;
+            --ty2: 0px;
+            transform: translate(var(--tx2), var(--ty2));
+
+            /* hover解除：上 → 停止 → 右（戻り用） */
+            transition:
+                --ty2 0.20s linear,
+                --tx2 0.20s linear 0.20s;
+        }
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .l-section--popular {
+        .c-card {
+            .c-card-link {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 599px) {
+    .l-section--popular {
+        .l-card-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+/* ============
+* NEW CONTENT
+============== */
+.l-section--new {
+    /* セクション内のカードグリッド */
+    .l-card-grid {
+        margin-bottom: 60px;
+    }
+    .glow {
+        display: none;
+    }
+}
+@media screen and (max-width: 600px) {
+    .l-section--new {
+        .l-card-grid {
+            margin-bottom: 30px;
+        }
+    }
+}
+
+/* ============
+* MARQUEE CONTENT
+============== */
+/* アニメーション定義 */
+@keyframes marquee-loop {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* コンテンツ1つ分（50%）左へ */
+        transform: translateX(-50%);
+    }
+}
+@keyframes marquee-loop-reverse {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+.l-section--marquee {
+    padding: 0;
+    max-width: 100%;
+
+    /* 表示エリア（はみ出た部分を隠す） */
+    .c-marquee {
+        overflow: hidden;
+        width: 100%;
+
+        /* 2つのテキストを横並びにするレール */
+        .c-marquee-track {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee-loop 20s linear infinite;
+        }
+
+        /* 流れる文字 */
+        .c-marquee-text {
+            padding-right: 20px; /* 文字のつなぎ目用余白 */
+            font-family: 'Homoarakhn Local';
+            font-size: 105px;
+            line-height: 1.5;
+            text-shadow: 0 0 3px color-mix(in srgb, var(--accent) 50%, var(--main)), 0 0 12px color-mix(in srgb, var(--accent) 60%, var(--main));
+            color: #000;
+        }
+    }
+    /* 逆方向：右へ流れる */
+    .c-marquee--reverse {
+        .c-marquee-track {
+            animation-name: marquee-loop-reverse;
+
+            .c-marquee-text {
+                font-family: 'AmazingSpiderManslant Local';
+                font-size: 80px;
+                text-shadow: 0 0 3px color-mix(in srgb, var(--accent2) 20%, var(--main)), 0 0 12px color-mix(in srgb, var(--accent2) 40%, var(--main));
+            }
+        }
+    }
+}
+@media screen and (max-width: 600px) {
+    .l-section--marquee {
+    /* 表示エリア（はみ出た部分を隠す） */
+        .c-marquee {
+            /* 流れる文字 */
+            .c-marquee-text {
+                font-size: 55px;
+            }
+        }
+        .c-marquee--reverse {
+            .c-marquee-track {
+
+                .c-marquee-text {
+                    font-size: 40px;
+               }
+            }
+        }
+    }
+}
+
+/* ============
+* SEARCH CONTENT
+============== */
+/* ボタン用変数 */
+@property --anglebtn {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 315deg;
+}
+.l-section--search {
+    overflow-x: visible;
+    padding-top: 50px;
+    margin-top: -50px;
+    position: relative;
+
+    /* 各ブロック（画像＋テキスト） */
+    .l-search-block {
+        display: flex;
+        align-items: flex-start;
+        gap: 30px;
+        margin-bottom: 80px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .l-search-block--reverse {
+        flex-direction: row-reverse;
+        margin-bottom: 0;
+        align-items: flex-end;
+    }
+
+    /* 画像 */
+    .l-search-visual {
+        flex: 0 1 clamp(360px, 46vw, 700px);
+        max-width: none;
+        width: auto;
+    }
+
+    .l-search-visual--glow-red {
+        border: 1px solid transparent;
+        border-radius: 16px;
+        position: relative;
+        --angle: 315deg;
+        background: linear-gradient(var(--main), var(--main)) padding-box, linear-gradient(var(--angle),
+            color-mix(in srgb, var(--main) 66%, var(--sub)) 0, var(--main) 18%, var(--main) 50%,
+            color-mix(in srgb, var(--main) 92.5%, var(--sub)) 85%, var(--sub) 100%) border-box;
+        box-shadow: 0 0 40px color-mix(in srgb, var(--accent2) 15%, transparent);
+        border: 1px solid transparent;
+
+        img {
+            border-radius: 16px;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -50px;
+            z-index: -1;
+            pointer-events: none;
+            padding: 50px;
+            background-color: var(--sub);
+            background-clip: content-box;
+            border-radius: 62px;
+            --mask-angle-red: 151deg;
+            filter: drop-shadow(0 0 6px var(--sub)) drop-shadow(0 0 17px var(--accent2));
+            -webkit-mask-image: linear-gradient(var(--mask-angle-red), var(--main) 40%, transparent 100%);
+            mask-image: linear-gradient(var(--mask-angle-red), var(--main) 16% 15%, transparent 26%);
+        }
+
+        .glow {
+            overflow: hidden;
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 16px;
+
+            &:after {
+                content: "";
+                position: absolute;
+                width: 150px;
+                height: 150px;
+                top: -70px;
+                left: -70px;
+                bottom: auto;
+                right: auto;
+                filter: blur(20px);
+                background: radial-gradient(circle,
+                    color-mix(in srgb, var(--accent2) 60%, var(--sub)) 10%,
+                    color-mix(in srgb, var(--main) 57%, var(--accent2)) 30%,
+                    color-mix(in srgb, var(--main) 97%, var(--accent2)) 100%);
+            }
+        }
+    }
+
+    .l-search-visual--glow-blue {
+        border: 1px solid transparent;
+        border-radius: 16px;
+        position: relative;
+        --angle: 495deg;
+        background: linear-gradient(var(--main), var(--main)) padding-box, linear-gradient(var(--angle),
+            color-mix(in srgb, var(--main) 66%, var(--sub)) 0, var(--main) 18%, var(--main) 50%,
+            color-mix(in srgb, var(--main) 92.5%, var(--sub)) 85%, var(--sub) 100%) border-box;
+        box-shadow: 0 0 40px color-mix(in srgb, var(--accent) 15%, transparent);
+        border: 1px solid transparent;
+
+        img {
+            border-radius: 16px;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -50px;
+            z-index: -1;
+            pointer-events: none;
+            padding: 50px;
+            background-color: var(--sub);
+            background-clip: content-box;
+            border-radius: 62px;
+            --mask-angle-blue: 335deg;
+            filter: drop-shadow(0 0 6px var(--sub)) drop-shadow(0 0 17px var(--accent));
+            -webkit-mask-image: linear-gradient(var(--mask-angle-blue), var(--main) 40%, transparent 100%);
+            mask-image: linear-gradient(var(--mask-angle-blue), var(--main) 16% 15%, transparent 26%);
+        }
+
+        .glow {
+            overflow: hidden;
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 16px;
+            bottom: 0;
+            right: 0;
+
+            &:after {
+                content: "";
+                position: absolute;
+                width: 150px;
+                height: 150px;
+                top: auto;
+                left: auto;
+                bottom: -70px;
+                right: -70px;
+                filter: blur(20px);
+                background: radial-gradient(circle,
+                    color-mix(in srgb, var(--accent) 60%, var(--sub)) 10%,
+                    color-mix(in srgb, var(--main) 57%, var(--accent)) 30%,
+                    color-mix(in srgb, var(--main) 97%, var(--accent)) 100%);
+            }
+        }
+    }
+
+    /* テキストコンテンツ */
+    .c-search-content {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    /* タイトル */
+    .c-section-title {
+        margin-bottom: 30px;
+    }
+    .c-section-title-main {
+        font-size: clamp(40px, calc(9.375vw - 35px), 80px);
+        line-height: 1.2;
+        margin-bottom: 5px;
+    }
+
+    /* 本文 */
+    .c-search-text {
+        margin-bottom: 50px;
+    }
+
+    /* ボタン */
+    .c-search-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    .c-search-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 0;
+        font-size: 13px;
+        position: relative;
+        border-radius: 5px;
+        border: 1px solid transparent;
+        --anglebtn: 315deg;
+        background:
+            linear-gradient(var(--main), var(--main)) padding-box,
+            linear-gradient(
+                var(--anglebtn),
+                color-mix(in srgb, var(--main) 66%, var(--sub)) 0%,
+                var(--main) 18%,
+                var(--main) 50%,
+                color-mix(in srgb, var(--main) 92.5%, var(--sub)) 85%,
+                var(--sub) 100%
+            ) border-box;
+
+        transition: --anglebtn 0.5s linear;
+        overflow: hidden;
+
+        &:hover {
+            --anglebtn: 495deg;
+        }
+
+        &::after {
+            content: "»";
+            position: absolute;
+            right: 10px;
+            font-size: 1.2em;
+            color:  color-mix(in srgb, var(--main) 25%, var(--sub));
+        }
+    }
+}
+@media screen and (max-width: 1320px) {
+    .l-section--search {
+        .c-search-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+}
+@media screen and (max-width: 900px) {
+    .l-section--search {
+        .l-search-block {
+            display: block;
+        }
+    .l-search-visual {
+        margin-bottom: 30px;
+        }
+    }
+}
+@media screen and (max-width: 900px) {
+    .l-section--search {
+        .c-section-title {
+            margin-bottom: 20px;
+        }
+    }
+}
+
+/* ============
+* MOVIE CONTENT
+============== */
+/* ループ移動 */
+@keyframes movie-marquee{
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.l-section--movie {
+    /* セクション外に漏れない */
+    overflow: hidden;
+    max-width: 100%;
+    padding: 0;
+
+    .c-section-title {
+        max-width: 1600px;
+        padding: 0 40px;
+        margin: 0 auto;
+    }
+
+    /* レール（横に長くするのが最重要） */
+    .l-movie-track{
+        display: flex;
+        width: max-content;        /* ← これが効くと一気に直ります */
+        will-change: transform;
+        animation: movie-marquee 20s linear infinite;
+    }
+
+    /* リスト（1セット） */
+    .l-movie-list{
+        display: flex;
+        gap: 20px;
+        padding-right: 20px;
+        margin: 0;
+        list-style: none;
+        flex: 0 0 auto;
+    }
+
+    /* 1枚288px */
+    .c-movie-item{
+        flex: 0 0 288px;
+    }
+
+    /* 9:16 */
+    iframe{
+        width: 100%;
+        aspect-ratio: 9 / 16;
+        height: auto;
+        display: block;
+        border: 0;
+        border-radius: 16px;
+        pointer-events:none;
+    }
+
+    /* hover停止（任意） */
+    .l-movie-track:hover{
+        animation-play-state: paused;
+    }
+}
+@media screen and (max-width: 600px) {
+    .l-section--movie {
+        .c-section-title {
+            padding: 0 20px;
+        }
+        .c-movie-item {
+            flex: 0 0 160px;
+        }
+    }
+}
+
+/* ============
+* BLOG CONTENT
+============== */
+.l-section--blog {
+    .c-section-title-main {
+        line-height: 1.2;
+    }
+    .l-card-grid {
+        margin-bottom: 60px;
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .c-blog-card-link {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .l-section--blog {
+        .c-blog-card-link {
+            grid-template-columns: 1fr 3fr;
+        }
+    }
+}
+@media screen and (max-width: 1000px) {
+    .l-section--blog {
+        .c-blog-card-link {
+            grid-template-columns: 1fr 2fr;
+        }
+        .l-card-grid {
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+    }
+}
+@media screen and (max-width: 650px) {
+    .l-section--blog {
+        .c-blog-card-link {
+            grid-template-columns: 1fr 1.5fr;
+            gap: 10px;
+        }
+        .c-blog-card-footer {
+            display: none;
+        }
+        .l-card-grid {
+            gap: 10px;
+        }
+    }
+}
+
+/* ============
+* REASONS CONTENT
+============== */
+
+.l-section--reasons {
+    position: relative;
+
+    .l-reasons-wrap{
+        padding: 0 40px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* タイトルやテキストのスタイル（適宜調整してください） */
+    .c-section-title,
+    .c-section-text-box {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+        z-index: 10; /* カードより手前に表示 */
+    }
+    .c-section-title-main {
+        line-height: 1.2;
+        margin-bottom: 10px;
+    }
+    .c-section-text {
+        margin-bottom: 20px;
+        &:last-child{
+            margin-bottom: 0;
+        }
+    }
+    /* カードを包むコンテナエリア */
+    .c-section-metrics {
+        position: relative;
+        width: 100%;
+        max-width: 1000px; /* カードの最大幅 */
+        margin: 0 auto 60px;
+    }
+
+    /* 個々のカードラッパー */
+    .c-metric-card-wrapper {
+        position: absolute; /* ここが重要：重ねるために絶対配置 */
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    /* カードの中身の装飾（適宜調整） */
+    .c-section-metric {
+        padding: 60px 0;
+        text-align: center;
+        border-radius: 15px;
+        will-change: transform, opacity;
+        border: 1px solid color-mix(in srgb, var(--main) 85%, var(--sub));
+        background-image:linear-gradient(45deg, var(--main) 0%, color-mix(in srgb, var(--main) 92%,  var(--sub)) 100%), linear-gradient( 225deg, var(--sub) 0%, var(--main) 15%, var(--main) 85%, var(--sub) 100%);
+        max-width: 100%;
+        width: 600px;
+        margin: 0 auto;
+    }
+    .c-section-count-main {
+        display: block;
+        font-size: 60px;
+        font-family: 'Outfit Local';
+        line-height: 1;
+    }
+    .c-section-count-sub {
+        font-size: px;
+        display: block;
+    }
+    .c-section-count-value {
+        font-family: 'Digital Numbers Local';
+        font-size: 80px;
+        text-shadow: 0 0 3px var(--accent2), 0 0 12px color-mix(in srgb, var(--accent2) 60%, transparent), 0 0 24px color-mix(in srgb, var(--accent2) 30%, transparent);
+    }
+    .c-section-count-text-box {
+        text-align: center;
+        padding: 50px 0 0;
+    }
+    .c-section-count-text {
+        margin-bottom: 20px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    /* ボタン */
+    .c-section-btn {
+        padding: 15px 40px;
+        background: #333;
+        border-radius: 50px;
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .l-section--reasons {
+        .c-section-text-box,
+        .c-section-count-text-box {
+            text-align: left;
+        }
+    }
+}
+@media screen and (max-width: 600px) {
+    .l-section--popular {
+        margin-bottom: 30px;
+
+        &::before {
+            filter: blur(50px);
+            height: 250px;
+            left: -120px;
+            top: -40px;
+            width: 250px;
+        }
+        &::after {
+            filter: blur(30px);
+            height: 280px;
+            right: -120px;
+            bottom: -90px;
+            width: 280px;
+        }
+    }
+    .l-section--search {
+        &::before {
+            filter: blur(50px);
+            height: 250px;
+            left: -120px;
+            top: -80px;
+            width: 250px;
+        }
+        &::after {
+            filter: blur(30px);
+            height: 280px;
+            right: -120px;
+            bottom: -90px;
+            width: 280px;
+        }
+    }
+    .l-section--reasons {
+        padding: 0;
+
+        &::before {
+            filter: blur(50px);
+            height: 250px;
+            left: -120px;
+            top: -80px;
+            width: 250px;
+        }
+        &::after {
+            filter: blur(30px);
+            height: 280px;
+            right: -120px;
+            bottom: -90px;
+            width: 280px;
+        }
+
+        .l-reasons-inner {
+            padding-bottom: 40px;
+            background: linear-gradient(var(--main), var(--main)) padding-box, linear-gradient(315deg, color-mix(in srgb, var(--main) 66%, var(--sub)) 0%, var(--main) 4%, var(--main) 50%, color-mix(in srgb, var(--main) 92.5%, var(--sub)) 97%, var(--sub) 100%) border-box;
+
+            &::after {
+                filter: blur(30px);
+                height: 300px;
+                right: -140px;
+                bottom: -140px;
+                width: 300px;
+            }
+
+            &::before {
+                filter: blur(30px);
+                height: 200px;
+                left: -80px;
+                top: -90px;
+                width: 200px;
+            }
+        }
+
+        .l-reasons-wrap {
+            padding: clamp(50px, 8.33vw, 100px) clamp(25px, calc(10vw - 30px), 100px) 0;
+        }
+
+        .c-section-metric{
+            padding: 80px 0;
+        }
+        .c-section-count-main {
+            font-size: 40px;
+        }
+    }
+}
