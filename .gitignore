@@ -1,0 +1,11 @@
+# OS・エディタ
+.DS_Store
+Thumbs.db
+
+# Node.js / build
+node_modules/
+npm-debug.log*
+yarn-error.log*
+*.log
+
+
