@@ -36,9 +36,15 @@
 
     /* 599以下：1個中央＋左右見切れ */
     @media (max-width: 599px){
+      .post-type-archive-blog .l-section--featured.is-blog-slider .l-card-grid > *{
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
       .l-card-grid {
-        padding-inline: 4%;
-        justify-content: center
+        padding-inline: 7%;
+        justify-content: flex-start;
       }
       .c-blog-card {
         flex: 0 0 84%;

@@ -39,11 +39,18 @@ export const blogslider = () => {
   let moved = false;
   let locked = false;
 
+  // pointer capture を「必要になったら」取るための管理
+  let activePointerId = null;
+  let hasCapture = false;
+
+  // 「クリック」と「ドラッグ」を分ける閾値
+  const MOVE_LOCK_PX = 8;     // 方向ロック開始
+  const DRAG_START_PX = 12;   // これを超えたらドラッグ扱い
+
   /* =========================
      helpers
   ========================= */
   const getPerView = () => {
-    // CSSに合わせる：4 / 3 / 2 / 1
     const w = window.innerWidth;
     if (w <= 599) return 1;
     if (w <= 999) return 2;
@@ -57,14 +64,11 @@ export const blogslider = () => {
     const n = parseFloat(g);
     const fromCss = Number.isFinite(n) ? n : 0;
 
-    // ★ 599以下は gap:20px 想定（CSSから取れない時の保険）
     if (window.innerWidth <= 599 && fromCss === 0) return 20;
-
     return fromCss;
   };
 
   const step = () => {
-    // 1ステップ = カード幅 + gap（見切れや120px控除でもズレない）
     const first = track.children[0];
     if (!first) return 0;
     const w = first.getBoundingClientRect().width || 0;
@@ -84,6 +88,12 @@ export const blogslider = () => {
     if (!st || st === 'none') return 0;
     const m = new DOMMatrixReadOnly(st);
     return m.m41;
+  };
+
+  const padLeft = () => {
+    const cs = getComputedStyle(track);
+    const v = parseFloat(cs.paddingLeft || '0');
+    return Number.isFinite(v) ? v : 0;
   };
 
   const stop = () => {
@@ -107,8 +117,7 @@ export const blogslider = () => {
   };
 
   /* =========================
-     dots（1ステップごと）
-     dotCount = originalsCount - perView + 1
+     dots
   ========================= */
   const buildDots = () => {
     dots = [];
@@ -122,7 +131,6 @@ export const blogslider = () => {
     for (let i = 0; i < dotCount; i++) {
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = '';
       b.setAttribute('aria-label', `${i + 1}番目の位置へ`);
       b.addEventListener('click', () => {
         stop();
@@ -146,7 +154,7 @@ export const blogslider = () => {
   };
 
   /* =========================
-     move / normalize (infinite)
+     move / normalize
   ========================= */
   const moveToIndex = (nextIndex, animate = true) => {
     const s = step();
@@ -154,7 +162,7 @@ export const blogslider = () => {
 
     index = nextIndex;
     setTransition(animate);
-    setX(-index * s);
+    setX(padLeft() - index * s);
     updateDots();
   };
 
@@ -203,7 +211,7 @@ export const blogslider = () => {
   /* =========================
      drag
   ========================= */
-  const beginDrag = (cx, cy) => {
+  const beginDrag = (cx, cy, pointerId) => {
     stop();
     dragging = true;
     moved = false;
@@ -212,6 +220,34 @@ export const blogslider = () => {
     startClientY = cy;
     startTranslate = currentX();
     setTransition(false);
+
+    activePointerId = pointerId ?? null;
+    hasCapture = false;
+  };
+
+  const ensureCapture = () => {
+    if (hasCapture) return;
+    if (activePointerId == null) return;
+    if (typeof track.setPointerCapture !== 'function') return;
+
+    try {
+      track.setPointerCapture(activePointerId);
+      hasCapture = true;
+    } catch (_) {
+      // 取れなくても致命的ではないので無視
+    }
+  };
+
+  const releaseCapture = () => {
+    if (!hasCapture) return;
+    if (activePointerId == null) return;
+    if (typeof track.releasePointerCapture !== 'function') return;
+
+    try {
+      track.releasePointerCapture(activePointerId);
+    } catch (_) {}
+    hasCapture = false;
+    activePointerId = null;
   };
 
   const dragMove = (cx, cy, ev) => {
@@ -220,19 +256,26 @@ export const blogslider = () => {
     const dx = cx - startClientX;
     const dy = cy - startClientY;
 
-    // 縦スクロール優先
+    // 方向ロック
     if (!locked) {
-      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      if (Math.abs(dx) < MOVE_LOCK_PX && Math.abs(dy) < MOVE_LOCK_PX) return;
       locked = Math.abs(dx) > Math.abs(dy);
+
+      // 横ドラッグだと確定したらここで capture を取る（←重要）
+      if (locked) ensureCapture();
     }
+
+    // 横ドラッグ中だけスクロール抑止
     if (locked && ev?.cancelable) ev.preventDefault();
-    if (Math.abs(dx) > 3) moved = true;
+
+    // 本当にドラッグした時だけ moved=true
+    if (locked && Math.abs(dx) > DRAG_START_PX) moved = true;
 
     const s = step();
     if (!s) return;
 
-    const minX = -(track.children.length - 1) * s;
-    const maxX = 0;
+    const maxX = padLeft();
+    const minX = padLeft() - (track.children.length - 1) * s;
 
     let nextX = startTranslate + dx;
 
@@ -248,9 +291,9 @@ export const blogslider = () => {
     dragging = false;
 
     const s = step();
-    if (!s) { start(); return; }
+    if (!s) { releaseCapture(); start(); return; }
 
-    const baseX = -index * s;
+    const baseX = padLeft() - index * s;
     const dx = currentX() - baseX;
     const threshold = s * 0.2;
 
@@ -262,26 +305,28 @@ export const blogslider = () => {
     const onEnd = () => {
       track.removeEventListener('transitionend', onEnd);
       normalizeIfNeeded();
+      releaseCapture();
       start();
     };
     track.addEventListener('transitionend', onEnd);
 
-    // ドラッグした時だけリンククリック抑止
+    // ドラッグした時だけ、次のclickを1回だけ潰す（リンク誤爆防止）
     if (moved) {
-      const cancelClick = (e) => { e.preventDefault(); e.stopPropagation(); };
-      root.addEventListener('click', cancelClick, true);
-      setTimeout(() => root.removeEventListener('click', cancelClick, true), 0);
+      root.addEventListener(
+        'click',
+        (e) => { e.preventDefault(); e.stopPropagation(); },
+        { capture: true, once: true }
+      );
     }
   };
 
   /* =========================
-     rebuild (レスポンシブ追従)
+     rebuild
   ========================= */
   const rebuild = () => {
     stop();
     isAnimating = false;
 
-    // まずクローン除去→本物だけに
     clearClones();
     originals = Array.from(track.children);
     originalsCount = originals.length;
@@ -289,18 +334,18 @@ export const blogslider = () => {
     perView = getPerView();
     updateNavVisibility();
 
-    // スライド不要
     if (originalsCount <= perView) {
+      root.classList.remove('is-blog-slider');
       setTransition(false);
       setX(0);
       if (dotsWrap) dotsWrap.innerHTML = '';
       return;
     }
 
-    // 現在の表示位置を維持（dot相当）
+    root.classList.add('is-blog-slider');
+
     const keepDot = Math.max(0, Math.min(originalsCount - perView, toDotIndex() || 0));
 
-    // 前後に perView 枚ずつクローン
     const headClones = originals.slice(0, perView).map((el) => {
       const c = el.cloneNode(true);
       c.classList.add('is-clone');
@@ -326,7 +371,6 @@ export const blogslider = () => {
 
     buildDots();
 
-    // 幅が取れてから開始（最初に触らないと動かない問題を潰す）
     const init = () => {
       const s = step();
       if (!s) {
@@ -345,38 +389,20 @@ export const blogslider = () => {
   prevBtn?.addEventListener('click', () => prev(true));
   nextBtn?.addEventListener('click', () => next(true));
 
-  // pointer
+  // pointerで統一
   track.addEventListener('pointerdown', (e) => {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
-    if (typeof track.setPointerCapture === 'function') track.setPointerCapture(e.pointerId);
-    beginDrag(e.clientX, e.clientY);
+    // ★ ここでは capture を取らない（リンククリックを殺さない）
+    beginDrag(e.clientX, e.clientY, e.pointerId);
   }, { passive: true });
 
   track.addEventListener('pointermove', (e) => dragMove(e.clientX, e.clientY, e), { passive: false });
   track.addEventListener('pointerup', endDrag, { passive: true });
   track.addEventListener('pointercancel', endDrag, { passive: true });
 
-  // touch fallback
-  track.addEventListener('touchstart', (e) => {
-    const t = e.touches?.[0];
-    if (!t) return;
-    beginDrag(t.clientX, t.clientY);
-  }, { passive: true });
-
-  track.addEventListener('touchmove', (e) => {
-    const t = e.touches?.[0];
-    if (!t) return;
-    dragMove(t.clientX, t.clientY, e);
-  }, { passive: false });
-
-  track.addEventListener('touchend', endDrag, { passive: true });
-  track.addEventListener('touchcancel', endDrag, { passive: true });
-
-  // hover停止
   root.addEventListener('mouseenter', stop);
   root.addEventListener('mouseleave', start);
 
-  // resize追従（perViewが変わるのでrebuild）
   let raf = 0;
   window.addEventListener('resize', () => {
     cancelAnimationFrame(raf);
@@ -385,6 +411,5 @@ export const blogslider = () => {
 
   window.addEventListener('load', rebuild, { once: true });
 
-  // init
   rebuild();
 };
