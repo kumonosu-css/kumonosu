@@ -19,17 +19,33 @@
       margin-top: 0;
     }
   }
+  h4 {
+    font-size: 18px;
+    margin: 70px 0 30px;
+    padding-left: 10px;
+    border-left: 1px solid transparent;
+    -o-border-image: linear-gradient(to bottom,var(--accent),var(--accent2)) 1;
+    border-image: linear-gradient(to bottom, var(--accent), var(--accent2)) 1;
+    line-height: 1.2;
+  }
   .wp-block-list {
     list-style: disc;
     padding-left: 20px;
+    margin-bottom: 30px;
 
     li {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
 
       &:last-child {
         margin-bottom: 0;
       }
     }
+  }
+  .wp-block-code {
+    background: color-mix(in srgb, var(--main) 90%, var(--sub));
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
   }
   /* プレビュー */
   .c-preview-content {
@@ -114,16 +130,6 @@
   }
 
 }
-@media (max-width: 800px) {
-  .single-css {
-    .l-section--share {
-      .c-share-item a {
-        width: 160px;
-        font-size: 14px;
-      }
-    }
-  }
-}
 @media (max-width: 600px) {
   .single-css {
     h3 {
@@ -131,26 +137,6 @@
     }
     .c-preview-tab > label {
       max-width: calc((100% - 20px) / 3);
-    }
-    .l-section--share {
-      .c-share-item a {
-        width: 50px;
-        border-radius: 50%;
-      }
-      .c-share-text {
-        display: none;
-      }
-    }
-    .c-code-code {
-      padding: 30px;
-    }
-    .c-code-copy {
-      margin-top: 20px;
-      margin-right: 20px;
-    }
-    .c-code-code {
-      margin-top: -60px;
-      font-size: 12px;
     }
   }
 }

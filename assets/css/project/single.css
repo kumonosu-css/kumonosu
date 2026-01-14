@@ -263,6 +263,19 @@
       width: 20px;
     }
   }
+  @media (max-width: 600px) {
+    .c-code-code {
+      padding: 30px;
+    }
+    .c-code-copy {
+      margin-top: 20px;
+      margin-right: 20px;
+    }
+    .c-code-code {
+      margin-top: -60px;
+      font-size: 12px;
+    }
+  }
 
   /* シェア */
   .l-section--share {
@@ -434,6 +447,16 @@
     }
   }
 }
+@media (max-width: 800px) {
+  .single-css {
+    .l-section--share {
+      .c-share-item a {
+        width: 160px;
+        font-size: 14px;
+      }
+    }
+  }
+}
 @media (max-width: 650px) {
   .single {
     .l-main-content {
@@ -451,6 +474,15 @@
   .single {
     .c-post-nav {
       margin-bottom: 80px;
+    }
+    .l-section--share {
+      .c-share-item a {
+        width: 50px;
+        border-radius: 50%;
+      }
+      .c-share-text {
+        display: none;
+      }
     }
   }
 }
