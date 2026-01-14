@@ -1112,4 +1112,124 @@ function kumonosu_get_featured_blogs(int $limit = 4): array {
   ]);
 }
 
+/* =====================================================
+ * Headタグ管理ページを追加
+ * ===================================================== */
+add_action('admin_menu', function () {
+    add_menu_page(
+        'Headタグ管理',
+        'Headタグ',
+        'manage_options',
+        'kumonosu-head-tags',
+        'kumonosu_render_head_tags_page',
+        'dashicons-editor-code',
+        80
+    );
+});
 
+function kumonosu_render_head_tags_page() {
+    if (!current_user_can('manage_options')) return;
+
+    // 保存処理
+    if (isset($_POST['kumonosu_head_tags_nonce']) &&
+        wp_verify_nonce($_POST['kumonosu_head_tags_nonce'], 'save_head_tags')
+    ) {
+        $tags = array_values(array_filter($_POST['head_tags'] ?? [], function ($item) {
+            return !empty($item['code']);
+        }));
+        update_option('kumonosu_head_tags', $tags);
+        echo '<div class="updated"><p>保存しました。</p></div>';
+    }
+
+    $head_tags = get_option('kumonosu_head_tags', []);
+    ?>
+
+    <div class="wrap">
+        <h1>Headタグ管理</h1>
+
+        <form method="post">
+            <?php wp_nonce_field('save_head_tags', 'kumonosu_head_tags_nonce'); ?>
+
+            <table class="widefat" id="head-tags-table">
+                <thead>
+                    <tr>
+                        <th style="width:20%">タイトル</th>
+                        <th>Head内に出力するタグ</th>
+                        <th style="width:60px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($head_tags as $i => $tag): ?>
+                    <tr>
+                        <td>
+                            <input type="text"
+                                   name="head_tags[<?= $i ?>][title]"
+                                   value="<?= esc_attr($tag['title'] ?? '') ?>"
+                                   class="regular-text">
+                        </td>
+                        <td>
+                            <textarea name="head_tags[<?= $i ?>][code]"
+                                      rows="4"
+                                      style="width:100%; font-family: monospace;"><?= esc_textarea($tag['code'] ?? '') ?></textarea>
+                        </td>
+                        <td>
+                            <button type="button" class="button remove-row">削除</button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+
+            <p>
+                <button type="button" class="button" id="add-head-tag">＋ タグを追加</button>
+            </p>
+
+            <?php submit_button(); ?>
+        </form>
+    </div>
+
+    <script>
+    document.getElementById('add-head-tag').addEventListener('click', () => {
+        const tbody = document.querySelector('#head-tags-table tbody');
+        const index = tbody.children.length;
+
+        tbody.insertAdjacentHTML('beforeend', `
+        <tr>
+            <td><input type="text" name="head_tags[${index}][title]" class="regular-text"></td>
+            <td><textarea name="head_tags[${index}][code]" rows="4" style="width:100%; font-family: monospace;"></textarea></td>
+            <td><button type="button" class="button remove-row">削除</button></td>
+        </tr>
+        `);
+    });
+
+    document.addEventListener('click', e => {
+        if (e.target.classList.contains('remove-row')) {
+            e.target.closest('tr').remove();
+        }
+    });
+    </script>
+
+<?php }
+
+/* =====================================================
+ * Headタグを出力
+ * ===================================================== */
+add_action('wp_head', function () {
+
+    // iframe プレビュー・埋め込みは除外
+    if (isset($_GET['preview']) || is_embed()) {
+        return;
+    }
+
+    $tags = get_option('kumonosu_head_tags', []);
+    if (empty($tags)) return;
+
+    foreach ($tags as $tag) {
+        if (!empty($tag['code'])) {
+            $title = esc_html($tag['title'] ?? '');
+            echo "\n<!-- {$title} -->\n";
+            echo $tag['code'] . "\n";
+        }
+    }
+
+}, 5);
