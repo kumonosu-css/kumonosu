@@ -23,10 +23,10 @@ $featured = function_exists('kumonosu_get_featured_blogs')
 
 <?php if (!empty($featured)) : ?>
 <section class="l-section l-section--featured">
-  <h2 class="c-section-title">
-    <span class="c-section-title-main" data-text="Featured&nbsp;Blog">Featured&nbsp;Blog</span>
-    <span class="c-section-title-sub" data-text="注目の特集">注目の特集</span>
-  </h2>
+  <div class="c-section-title">
+    <span class="c-section-title-main" aria-hidden="true" data-text="Featured&nbsp;Blog">Featured&nbsp;Blog</span>
+    <h2 class="c-section-title-sub" data-text="注目の特集">注目の特集</h2>
+  </div>
 
   <div class="l-card-grid">
     <?php foreach ($featured as $post) : setup_postdata($post); ?>
@@ -43,10 +43,10 @@ $featured = function_exists('kumonosu_get_featured_blogs')
 <?php endif; ?>
 
 <section class="l-section l-section--blog">
-  <h1 class="c-section-title">
-    <span class="c-section-title-main" data-text="Blog">Blog</span>
-    <span class="c-section-title-sub" data-text="特集&まとめ">特集&まとめ</span>
-  </h1>
+  <div class="c-section-title">
+    <span class="c-section-title-main" aria-hidden="true" data-text="Blog">Blog</span>
+    <h1 class="c-section-title-sub" data-text="特集&まとめ">特集&まとめ</h1>
+  </div>
 
   <div class="c-blog-list"
     data-kumonosu-list

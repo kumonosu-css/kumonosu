@@ -134,6 +134,9 @@ textarea::-ms-input-placeholder {
   }
 }
 @media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
   .c-pc-w600 {
     display: none;
   }

@@ -210,7 +210,6 @@ if ( ! function_exists( 'kumonosu_metabox_html' ) ) {
             <ul class="kumonosu-tabs">
                 <li class="active" data-tab="tab-intro">導入文</li>
                 <li data-tab="tab-code">コード設定</li>
-                <li data-tab="tab-youtube">動画</li>
                 <li data-tab="tab-freetext">フリーテキスト</li>
                 <li data-tab="tab-related">関連記事</li>
                 <li data-tab="tab-summary">まとめ</li>
@@ -309,28 +308,6 @@ if ( ! function_exists( 'kumonosu_metabox_html' ) ) {
                         </div>
 
                     </div>
-                </div>
-
-                <!-- 【タブ：動画】 -->
-                <div id="tab-youtube" class="kumonosu-tab-panel">
-                <div class="kumonosu-section">
-                    <label class="kumonosu-label">YouTube iframe</label>
-
-                    <textarea
-                    name="kumonosu_youtube_iframe"
-                    rows="6"
-                    class="kumonosu-textarea code-font"
-                    placeholder='<iframe width="560" height="315" src="https://www.youtube.com/embed/XXXX" frameborder="0" allowfullscreen></iframe>'
-                    ><?php
-                    echo esc_textarea(
-                        get_post_meta($post->ID, '_kumonosu_youtube_iframe', true)
-                    );
-                    ?></textarea>
-
-                    <p class="description" style="margin-top:6px;">
-                    URLの後ろに「?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=動画ID」
-                    </p>
-                </div>
                 </div>
 
                 <!-- 【タブ3】フリーテキスト -->
@@ -456,7 +433,6 @@ if ( ! function_exists( 'kumonosu_save_custom_meta' ) ) {
             'code_config' => '_kumonosu_code_config',
             'ext_js'      => '_kumonosu_ext_js',
             'ext_css'     => '_kumonosu_ext_css',
-            'youtube_iframe' => '_kumonosu_youtube_iframe',
             'blog_summary'=> '_kumonosu_blog_summary',
         );
 
@@ -924,7 +900,7 @@ if ( ! function_exists( 'get_kumonosu_blog_pick_posts_data' ) ) {
 // メタボックス登録
 add_action( 'add_meta_boxes', 'kumonosu_register_description_metabox' );
 function kumonosu_register_description_metabox() {
-    $screens = array( 'page', 'post', 'css', 'blog' );
+    $screens = array( 'page', 'post', 'css', 'blog', 'tool' );
     foreach ( $screens as $screen ) {
         add_meta_box(
             'kumonosu_description_meta',
@@ -1134,9 +1110,23 @@ function kumonosu_render_head_tags_page() {
     if (isset($_POST['kumonosu_head_tags_nonce']) &&
         wp_verify_nonce($_POST['kumonosu_head_tags_nonce'], 'save_head_tags')
     ) {
-        $tags = array_values(array_filter($_POST['head_tags'] ?? [], function ($item) {
-            return !empty($item['code']);
-        }));
+        // WordPressが自動で付与するスラッシュを除去
+        $posted = isset($_POST['head_tags']) ? wp_unslash($_POST['head_tags']) : [];
+
+        // 空行を除外しつつ、titleだけ軽くサニタイズ
+        $tags = array_values(array_filter(array_map(function ($item) {
+            $title = isset($item['title']) ? sanitize_text_field($item['title']) : '';
+            $code  = isset($item['code'])  ? trim($item['code']) : '';
+
+            // codeが空なら保存しない
+            if ($code === '') return null;
+
+            return [
+                'title' => $title,
+                'code'  => $code, // ← HTMLはそのまま保存
+            ];
+        }, $posted)));
+
         update_option('kumonosu_head_tags', $tags);
         echo '<div class="updated"><p>保存しました。</p></div>';
     }
@@ -1233,3 +1223,44 @@ add_action('wp_head', function () {
     }
 
 }, 5);
+
+/**
+ * Tool: Full HTML meta box
+ */
+
+add_action('add_meta_boxes', function () {
+  add_meta_box(
+    'kumonosu_tool_full_html',
+    'ツールHTML（<!doctype html> から </html> まで貼り付け）',
+    function ($post) {
+      wp_nonce_field('kumonosu_tool_full_html_save', 'kumonosu_tool_full_html_nonce');
+
+      $value = get_post_meta($post->ID, '_kumonosu_tool_full_html', true);
+
+      echo '<p style="margin:0 0 8px;">AIが生成した <strong>完成HTMLを丸ごと</strong> ここに貼ってください（head/body/script含む）。</p>';
+      echo '<textarea name="kumonosu_tool_full_html" style="width:100%;min-height:420px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \'Liberation Mono\', \'Courier New\', monospace;">' . esc_textarea($value) . '</textarea>';
+    },
+    'tool',
+    'normal',
+    'high'
+  );
+});
+
+add_action('save_post_tool', function ($post_id) {
+  // autosave / revision 対策
+  if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+  if (wp_is_post_revision($post_id)) return;
+
+  // nonce
+  if (
+    !isset($_POST['kumonosu_tool_full_html_nonce']) ||
+    !wp_verify_nonce($_POST['kumonosu_tool_full_html_nonce'], 'kumonosu_tool_full_html_save')
+  ) return;
+
+  // 権限
+  if (!current_user_can('edit_post', $post_id)) return;
+
+  // 保存（HTMLをそのまま保持したいので過度なサニタイズはしない）
+  $html = isset($_POST['kumonosu_tool_full_html']) ? wp_unslash($_POST['kumonosu_tool_full_html']) : '';
+  update_post_meta($post_id, '_kumonosu_tool_full_html', $html);
+}, 10, 1);

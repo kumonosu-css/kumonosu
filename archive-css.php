@@ -137,10 +137,10 @@ $nonce    = wp_create_nonce('kumonosu_css_filter_nonce');
 ?>
 
 <section class="l-section l-section--new">
-  <h1 class="c-section-title">
-    <span class="c-section-title-main" data-text="CSS">CSS</span>
-    <span class="c-section-title-sub" data-text="CSS一覧">CSS一覧</span>
-  </h1>
+  <div class="c-section-title">
+    <span class="c-section-title-main" aria-hidden="true" data-text="CSS">CSS</span>
+    <h1 class="c-section-title-sub" data-text="CSS一覧">CSS一覧</h1>
+  </div>
 
   <div class="c-sort"
     data-kumonosu-list

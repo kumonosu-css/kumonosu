@@ -19,8 +19,8 @@ if ($template_path) {
 ?>
 
 <section class="l-section l-section--about">
-  <h1 class="c-section-title">
-    <span class="c-section-title-main" data-text="<?php
+  <div class="c-section-title">
+    <span class="c-section-title-main" aria-hidden="true" data-text="<?php
       global $post;
       $slug = $post->post_name;
 
@@ -35,8 +35,8 @@ if ($template_path) {
       echo ucfirst( $slug );
     ?>
     </span>
-    <span class="c-section-title-sub"><?php the_title(); ?></span>
-  </h1>
+    <h1 class="c-section-title-sub"><?php the_title(); ?></h1>
+  </div>
   <div class="c-section-content">
     <nav class="c-sitemap-group" aria-labelledby="sitemap-main">
       <h2 class="c-sitemap-heading" id="sitemap-main">KUMONOSU</h2>

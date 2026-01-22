@@ -144,6 +144,7 @@ add_action('template_redirect', function () {
   $cpt_types = [
     'css',
     'blog',
+    'tool',
   ];
 
   // ▼ sitemap に含めない固定ページ（パス）

@@ -260,14 +260,14 @@
 
 		<main class="l-main">
 			<?php if ( is_home() || is_front_page() ) : ?>
-<div id="canvas-container" class="l-hero-canvas">
-    <div id="canvas-wrapper">
-        <canvas id="liquidCanvas"></canvas>
-    </div>
-</div>
+			<div id="canvas-container" class="l-hero-canvas">
+				<div id="canvas-wrapper">
+					<canvas id="liquidCanvas"></canvas>
+				</div>
+			</div>
 			<?php endif; ?>
 			<?php if ( !is_home() && !is_front_page() && !is_404() ) : ?>
-<div id="canvas-wrapper" class="l-hero-canvas">
-    <canvas id="liquidCanvas"></canvas>
-</div>
+			<div id="canvas-wrapper" class="l-hero-canvas">
+				<canvas id="liquidCanvas"></canvas>
+			</div>
 			<?php endif; ?>

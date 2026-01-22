@@ -153,6 +153,46 @@ function custom_taxonomy_blog_tag(){
 }
 
 /*==========================================
+カスタム投稿タイプの追加（ツール）
+==========================================*/
+add_action( 'init', 'create_CPT_tool' );
+function create_CPT_tool() {
+  register_post_type( 'tool',
+    array(
+      'label' => 'ツール',
+      'labels' => array(
+        'singular_name' => 'ツール',
+        'menu_name' => 'ツール',
+        'add_new_item' => 'ツールを追加',
+        'add_new' => '新規追加',
+        'new_item' => '新規投稿',
+        'edit_item'=>'ツールを編集',
+        'view_item' => '投稿を表示',
+        'not_found' => '投稿は見つかりませんでした',
+        'not_found_in_trash' => 'ゴミ箱に投稿はありません。',
+        'search_items' => 'ツールを検索',
+      ),
+      'public' => true,
+      'menu_position' => 6,
+      'show_in_rest'  => true,
+      'publicly_queryable' => true,
+      'show_ui' => true,
+      'show_in_menu' => true,
+      'query_var' => true,
+      'hierarchical' => false,
+      'rewrite' => true,
+      'supports' => array(
+        'title',
+        'editor',
+        'thumbnail',
+        'revisions',
+      ),
+      'has_archive'   => true,
+    )
+  );
+}
+
+/*==========================================
 カスタム投稿タイプの追加（お問い合わせ）
 ==========================================*/
 add_action('init', 'create_CPT_contact');
@@ -203,7 +243,7 @@ function create_CPT_contact() {
 add_action( 'save_post', 'auto_post_slug_to_id', 10, 3 );
 function auto_post_slug_to_id( $post_id, $post, $update ) {
     // URLを数字にしたいカスタム投稿タイプをここに記述
-    $target_types = array( 'css', 'blog' );
+    $target_types = array( 'css', 'blog', 'tool' );
 
     // 対象外の投稿タイプ、またはリビジョン（下書き保存履歴）なら何もしない
     if ( ! in_array( $post->post_type, $target_types ) || wp_is_post_revision( $post_id ) ) {

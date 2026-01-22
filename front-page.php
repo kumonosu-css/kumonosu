@@ -30,10 +30,10 @@ $top_css_today = function_exists('kumonosu_get_top_css_today')
 
 <!-- POPULAR CONTENT -->
 <section class="l-section l-section--popular">
-  <h2 class="c-section-title">
-    <span class="c-section-title-main" data-text="Popular&nbsp;CSS">Popular&nbsp;CSS</span>
-    <span class="c-section-title-sub" data-text="よく見られているCSS">よく見られているCSS</span>
-  </h2>
+  <div class="c-section-title">
+    <span class="c-section-title-main" aria-hidden="true" data-text="Popular&nbsp;CSS">Popular&nbsp;CSS</span>
+    <h2 class="c-section-title-sub" data-text="よく見られているCSS">よく見られているCSS</h2>
+  </div>
 
   <div class="l-card-grid">
     <?php if ( ! empty($top_css_today) ) : ?>
@@ -88,10 +88,10 @@ $top_css_today = function_exists('kumonosu_get_top_css_today')
 
 <!-- NEW CONTENT -->
 <section class="l-section l-section--new">
-	<h2 class="c-section-title">
-    <span class="c-section-title-main" data-text="New&nbsp;CSS">New&nbsp;CSS</span>
-    <span class="c-section-title-sub" data-text="最新のCSS">最新のCSS</span>
-  </h2>
+	<div class="c-section-title">
+    <span class="c-section-title-main" aria-hidden="true" data-text="New&nbsp;CSS">New&nbsp;CSS</span>
+    <h2 class="c-section-title-sub" data-text="最新のCSS">最新のCSS</h2>
+  </div>
 	<div class="l-card-grid">
         <?php
         $args = array(
@@ -149,10 +149,10 @@ $top_css_today = function_exists('kumonosu_get_top_css_today')
             <img src="<?php echo get_template_directory_uri(); ?>/assets/img/front/serch-category.jpg" alt="Search Category Visual" loading="lazy" width="818" height="472">
         </div>
         <div class="c-search-content">
-            <h2 class="c-section-title">
-                <span class="c-section-title-main" data-text="Category&nbsp;CSS">Category&nbsp;CSS</span>
-                <span class="c-section-title-sub" data-text="CCSをカテゴリから探す">CCSをカテゴリから探す</span>
-            </h2>
+            <div class="c-section-title">
+                <span class="c-section-title-main" aria-hidden="true" data-text="Category&nbsp;CSS">Category&nbsp;CSS</span>
+                <h2 class="c-section-title-sub" data-text="CCSをカテゴリから探す">CCSをカテゴリから探す</h2>
+            </div>
             <p class="c-search-text"> KUMONOSUではCSSアニメーションやスクロールエフェクト、ホバー演出などをカテゴリ別に分類しています。目的に合わせて必要なCSS/JSをすぐに探せます。</p>
             <ul class="c-search-grid">
                 <?php
@@ -181,10 +181,10 @@ $top_css_today = function_exists('kumonosu_get_top_css_today')
             <img src="<?php echo get_template_directory_uri(); ?>/assets/img/front/serch-tag.jpg" alt="Search Parts Visual" loading="lazy" width="818" height="472">
         </div>
         <div class="c-search-content">
-            <h2 class="c-section-title">
-                <span class="c-section-title-main" data-text="Parts&nbsp;CSS">Parts&nbsp;CSS</span>
-                <span class="c-section-title-sub" data-text="CCSをパーツから探す">CCSをパーツから探す</span>
-            </h2>
+            <div class="c-section-title">
+                <span class="c-section-title-main" aria-hidden="true" data-text="Parts&nbsp;CSS">Parts&nbsp;CSS</span>
+                <h2 class="c-section-title-sub" data-text="CCSをパーツから探す">CCSをパーツから探す</h2>
+            </div>
             <p class="c-search-text">パーツ検索では、ボタン、カード、ナビゲーション、メインビジュアルなど、実際に使うUIパーツごとにCSS/JSのデモを探せます。</p>
             <ul class="c-search-grid">
                 <?php
@@ -210,86 +210,12 @@ $top_css_today = function_exists('kumonosu_get_top_css_today')
     </div>
 </section>
 
-<?php
-$movie_query = new WP_Query([
-  'post_type'      => 'css',
-  'posts_per_page' => 6,
-  'post_status'    => 'publish',
-  'orderby'        => 'date',
-  'order'          => 'DESC',
-  'meta_query'     => [
-    [
-      'key'     => '_kumonosu_youtube_iframe',
-      'value'   => '',
-      'compare' => '!=',
-    ],
-  ],
-]);
-
-if ( $movie_query->have_posts() ) :
-?>
-<!-- MOVIE CONTENT -->
-<section class="l-section l-section--movie">
-  <h2 class="c-section-title">
-    <span class="c-section-title-main" data-text="Shot&nbsp;Movie">Shot&nbsp;Movie</span>
-    <span class="c-section-title-sub" data-text="ショート動画">ショート動画</span>
-  </h2>
-
-  <div class="l-movie-track">
-
-    <!-- 表示用 -->
-    <div class="l-movie-list">
-      <?php while ( $movie_query->have_posts() ) :
-        $movie_query->the_post();
-
-        $iframe_raw = trim(
-          (string) get_post_meta(get_the_ID(), '_kumonosu_youtube_iframe', true)
-        );
-
-        if ($iframe_raw === '') continue;
-      ?>
-        <div class="c-movie-item">
-          <a href="<?php the_permalink(); ?>" class="c-movie-link">
-            <?php echo $iframe_raw; ?>
-          </a>
-        </div>
-      <?php endwhile; ?>
-    </div>
-
-    <!-- ループ用（スクリーンリーダー非表示） -->
-    <div class="l-movie-list" aria-hidden="true">
-      <?php
-      $movie_query->rewind_posts();
-      while ( $movie_query->have_posts() ) :
-        $movie_query->the_post();
-
-        $iframe_raw = trim(
-          (string) get_post_meta(get_the_ID(), '_kumonosu_youtube_iframe', true)
-        );
-
-        if ($iframe_raw === '') continue;
-      ?>
-        <div class="c-movie-item">
-          <a href="<?php the_permalink(); ?>" class="c-movie-link">
-            <?php echo $iframe_raw; ?>
-          </a>
-        </div>
-      <?php endwhile; ?>
-    </div>
-
-  </div>
-</section>
-<?php
-wp_reset_postdata();
-endif;
-?>
-
 <!-- BLOG CONTENT -->
 <section class="l-section l-section--blog">
-	<h2 class="c-section-title">
-        <span class="c-section-title-main" data-text="Blog">Blog</span>
-        <span class="c-section-title-sub" data-text="特集&まとめ">特集&まとめ</span>
-    </h2>
+	<div class="c-section-title">
+        <span class="c-section-title-main" aria-hidden="true" data-text="Blog">Blog</span>
+        <h2 class="c-section-title-sub" data-text="特集&まとめ">特集&まとめ</h2>
+    </div>
 	<div class="l-card-grid">
         <?php
         $args = array(
@@ -327,14 +253,14 @@ $pv_total = function_exists('kumonosu_get_site_pv_total') ? kumonosu_get_site_pv
 <section class="l-section l-section--reasons">
     <div class="l-reasons-inner">
         <div class="l-reasons-wrap">
-            <h2 class="c-section-title">
-                <span class="c-section-title-main" data-text="Why&nbsp;KUMONOSU">Why<br class="c-sp-w600"><span class="c-pc-w600">&nbsp;</span>KUMONOSU</span>
-                <span class="c-section-title-sub" data-text="なぜKUMONOSU？">なぜKUMONOSU？</span>
-            </h2>
+            <div class="c-section-title">
+                <span class="c-section-title-main" aria-hidden="true" data-text="Why&nbsp;KUMONOSU">Why<br class="c-sp-w600"><span class="c-pc-w600">&nbsp;</span>KUMONOSU</span>
+                <h2 class="c-section-title-sub" data-text="なぜKUMONOSU？">なぜKUMONOSU？</h2>
+            </div>
 
             <div class="c-section-text-box">
-                <p class="c-section-text">KUMONOSUは<span class="c-sp-w600">、</span><br class="c-pc-w600">CSSやJavaScriptを使ったアニメーションやレイアウトデザインを<span class="c-pc-w1000">、</span><br class="c-sp-w1000 c-pc-w600">実際に試してみたサイトです。<br>
-                <p class="c-section-text">「どんな見た目・どんな動きになるのか」を実際に確認でき、<span class="c-pc-w1000">、</span><br class="c-sp-w1000 c-pc-w600">デモとコード付きのためコピペ可能です。</p>
+                <p class="c-section-text">KUMONOSUは<span class="c-sp-w600">、</span><br class="c-pc-w600">CSSやJavaScriptを使ったアニメーションやレイアウトデザインを<span class="c-pc-w1000">、</span><br class="c-sp-w1000 c-pc-w600">実際に試してみたサイトです。</p>
+                <p class="c-section-text">「どんな見た目・どんな動きになるのか」を実際に確認でき<span class="c-pc-w1000">、</span><br class="c-sp-w1000 c-pc-w600">デモとコード付きのためコピペ可能です。</p>
                 <p class="c-section-text">海外の最新トレンドやモダンなCSSを中心に<span class="c-pc-w1000">、</span><br class="c-sp-w1000 c-pc-w600">Webデザイナーやフロントエンド制作者の初心者からベテランまで<span class="c-sp-w600">、</span><br class="c-pc-w600">制作の中で使えそうな表現を厳選して掲載しています。</p>
                 <p class="c-section-text">また、カテゴリやパーツごとに整理しているため<span class="c-pc-w1000">、</span><br class="c-sp-w1000 c-pc-w600">アイデア探しやデザインの参考としても使いやすく<span class="c-sp-w1000">、</span><br class="c-pc-w1000 c-pc-w600">CSS・JSを探したいときに便利なサイトです。</p>
             </div>

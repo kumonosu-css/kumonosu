@@ -19,8 +19,8 @@ if ($template_path) {
 ?>
 
 <section class="l-section l-section--about">
-  <h1 class="c-section-title">
-    <span class="c-section-title-main" data-text="<?php
+  <div class="c-section-title">
+    <span class="c-section-title-main" aria-hidden="true" data-text="<?php
       global $post;
       $slug = $post->post_name;
       echo ucfirst( $slug );
@@ -29,8 +29,8 @@ if ($template_path) {
       echo ucfirst( $slug );
     ?>
     </span>
-    <span class="c-section-title-sub" data-text="<?php the_title(); ?>"><?php the_title(); ?></span>
-  </h1>
+    <h1 class="c-section-title-sub" data-text="<?php the_title(); ?>"><?php the_title(); ?></h1>
+  </div>
   <div class="c-section-content">
     <?php
     // get_header(); 削除（上部で読み込み済みのための重複削除）

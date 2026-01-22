@@ -630,6 +630,33 @@ add_action('admin_init', function () {
   register_setting('kumonosu_recaptcha_group', 'kumonosu_recaptcha_secret_key');
 });
 
+/**
+ * contact を編集画面で開いたら既読にする
+ */
+add_action('load-post.php', function () {
+  // 管理画面のみ
+  if (!is_admin()) return;
+
+  // 編集画面だけ（post.php?action=edit）
+  $action = isset($_GET['action']) ? sanitize_text_field(wp_unslash($_GET['action'])) : '';
+  if ($action !== 'edit') return;
+
+  // 対象ID
+  $post_id = isset($_GET['post']) ? (int) $_GET['post'] : 0;
+  if ($post_id <= 0) return;
+
+  // contact 以外は無視
+  if (get_post_type($post_id) !== 'contact') return;
+
+  // 権限チェック
+  if (!current_user_can('edit_post', $post_id)) return;
+
+  // 未読なら既読に更新
+  $is_read = (int) get_post_meta($post_id, 'is_read', true);
+  if ($is_read === 0) {
+    update_post_meta($post_id, 'is_read', 1);
+  }
+});
 
 /**
  * =========================================================
