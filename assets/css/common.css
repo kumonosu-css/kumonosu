@@ -22,7 +22,6 @@ PostCSSでビルド
 @import "layout/l-footer.css";
 @import "layout/l-main.css";
 @import "layout/l-sidebar.css";
-@import "layout/l-loading.css";
 @import "layout/l-scroll.css";
 @import "layout/l-bg.css";
 

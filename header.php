@@ -71,11 +71,6 @@
 		<div data-kumonosu-post-id="<?php echo (int) get_the_ID(); ?>"></div>
 		<?php endif; ?>
 
-		<!-- Loader Container -->
-		<div id="loader-container">
-			<canvas id="c"></canvas>
-		</div>
-		<div id="js-loading">
 		<header id="header" class="l-header">
 			<div class="l-navi -closed js-navi">
 				<div class="l-navi-overlay js-overlay"></div>

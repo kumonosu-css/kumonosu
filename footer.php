@@ -68,10 +68,8 @@
     このホームページに記載されている一切の文言・図版・写真を、手段や形態を問わず、複製、転載することを禁じます。<br>
     © KUMONOSU
   </p>
-
-
 </footer>
-</div>
+
 <?php if ( is_home() || is_front_page() ) : ?>
 <!-- Load Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -85,10 +83,6 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-<?php endif; ?>
-<?php if ( !is_home() || !is_front_page() ) : ?>
-<!-- Load Three.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <?php endif; ?>
 <?php if( is_404() ): ?>
 <!-- Three.js 関連ライブラリ -->
